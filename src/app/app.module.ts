@@ -14,22 +14,42 @@ import { RegistroUsuariosScreenComponent } from './screens/registro-usuarios-scr
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
 
+import {MatCardModule} from '@angular/material/card';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import { MatRadioModule } from '@angular/material/radio';
+import { RegistroAdminComponent } from './partials/registro-admin/registro-admin.component';
+import { RegistroAlumnosComponent } from './partials/registro-alumnos/registro-alumnos.component';
+import { RegistroMaestrosComponent } from './partials/registro-maestros/registro-maestros.component';
+
+//Ngx -cookie-service
+import { CookieService } from 'ngx-cookie-service';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginScreenComponent,
     RegistroUsuariosScreenComponent,
     AuthLayoutComponent,
-    DashboardLayoutComponent
+    DashboardLayoutComponent,
+    RegistroAdminComponent,
+    RegistroAlumnosComponent,
+    RegistroMaestrosComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatRadioModule
   ],
-  providers: [],
+  providers: [
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
