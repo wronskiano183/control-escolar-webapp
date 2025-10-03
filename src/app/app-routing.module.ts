@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginScreenComponent } from './screens/login-screen/login-screen.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
+import { RegistroUsuariosScreenComponent } from './screens/registro-usuarios-screen/registro-usuarios-screen.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,7 @@ const routes: Routes = [
   children: [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginScreenComponent },
+    { path: 'registro-usuarios', component: RegistroUsuariosScreenComponent }
   ]
   },
   {
