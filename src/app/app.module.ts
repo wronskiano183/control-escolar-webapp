@@ -23,6 +23,8 @@ import { RegistroAlumnosComponent } from './partials/registro-alumnos/registro-a
 import { RegistroMaestrosComponent } from './partials/registro-maestros/registro-maestros.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 //Ngx -cookie-service
 import { CookieService } from 'ngx-cookie-service';
@@ -53,7 +55,9 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     MatRadioModule,
     MatFormFieldModule,
     MatInputModule,
-    NgxMaskDirective
+    NgxMaskDirective,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     CookieService,
