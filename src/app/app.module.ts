@@ -25,6 +25,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 //Ngx -cookie-service
 import { CookieService } from 'ngx-cookie-service';
@@ -57,7 +58,8 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     MatInputModule,
     NgxMaskDirective,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatCheckboxModule
   ],
   providers: [
     CookieService,

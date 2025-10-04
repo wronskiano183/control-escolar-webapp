@@ -1,1 +1,137 @@
-<p>registro-maestros works!</p>
+<div class="wrapper">
+  <!-- Va a englobar todo el formulario con la cabecera -->
+  <div class="section-registro">
+    <div class="body-registro">
+      <div class="row mt-3 mb-3">
+        <div class="form-group col-12">
+          <label class="title-user" for="tipo_usuario">Ingresa los datos de maestros</label>
+        </div>
+      </div>
+      <!-- Aquí empiezan los campos del formulario -->
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>ID de maestros</mat-label>
+        <input matInput [(ngModel)]="maestros.clave_maestros" name="id" placeholder="Escribe clave de maestros">
+      </mat-form-field>
+      <div *ngIf="errors.clave_maestros" class="invalid-feedback">{{ errors.clave_maestros }}</div>
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="maestros.first_name" placeholder="Escribe nombre" (keypress)="soloLetras($event)">
+      </mat-form-field>
+      <div *ngIf="errors.first_name" class="invalid-feedback">{{ errors.first_name }}</div>
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Apellidos</mat-label>
+        <input matInput [(ngModel)]="maestros.last_name" placeholder="Escribe apellidos"
+          (keypress)="soloLetras($event)">
+      </mat-form-field>
+      <div *ngIf="errors.last_name" class="invalid-feedback">{{ errors.last_name }}</div>
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput [(ngModel)]="maestros.email" placeholder="Escribe correo electrónico" [disabled]="editar">
+      </mat-form-field>
+      <div *ngIf="errors.email" class="invalid-feedback">{{ errors.email }}</div>
+
+      <mat-form-field class="mat-input" appearance="outline" *ngIf="!editar">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [(ngModel)]="maestros.password" type="{{ inputType_1 }}" placeholder="Escribe contraseña">
+        <mat-icon matSuffix class="eye-icon" (click)="showPassword()">{{hide_1 ? 'visibility_off' :
+          'visibility'}}</mat-icon>
+      </mat-form-field>
+      <div *ngIf="errors.password" class="invalid-feedback">{{ errors.password }}</div>
+
+      <mat-form-field class="mat-input" appearance="outline" *ngIf="!editar">
+        <mat-label>Confirmar contraseña</mat-label>
+        <input matInput [(ngModel)]="maestros.confirmar_password" type="{{ inputType_2 }}"
+          placeholder="Confirma la contraseña">
+        <mat-icon matSuffix class="eye-icon" (click)="showPwdConfirmar()">{{hide_2 ? 'visibility_off' :
+          'visibility'}}</mat-icon>
+      </mat-form-field>
+      <div *ngIf="errors.confirmar_password" class="invalid-feedback">{{ errors.confirmar_password }}</div>
+
+      <!-- nuevo campo agregar fecha de nacimiento -->
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>00/00/0000</mat-label>
+        <input matInput minlength="8" maxlength="8" matInput [matDatepicker]="picker"
+          [(ngModel)]="maestros.fecha_nacimiento" placeholder="00/00/0000" style="text-transform: uppercase;"
+          (keypress)="soloNumeros($event)" [disabled]="editar">
+
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <div *ngIf="errors.fecha_nacimiento" class="invalid-feedback">
+        {{ errors.fecha_nacimiento }}
+      </div>
+
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Teléfono</mat-label>
+        <input matInput [(ngModel)]="maestros.telefono" mask='(000) 000-0000' placeholder="Escribe teléfono">
+      </mat-form-field>
+      <div *ngIf="errors.telefono" class="invalid-feedback">{{ errors.telefono }}</div>
+
+      <!-- campo de curp -->
+      <mat-form-field class="mat-input mat-hint-margin" appearance="outline">
+        <mat-label>CURP</mat-label>
+        <input matInput minlength="18" maxlength="18" [(ngModel)]="maestros.curp" placeholder="Escribe CURP"
+          style="text-transform: uppercase;">
+        <mat-hint align="end">{{maestros.curp?.length || 0}}/18</mat-hint>
+      </mat-form-field>
+      <div *ngIf="errors.curp" class="invalid-feedback">{{ errors.curp }}</div>
+
+
+      <mat-form-field class="mat-input mat-hint-margin" appearance="outline">
+        <mat-label>RFC</mat-label>
+        <input matInput minlength="12" maxlength="13" [(ngModel)]="maestros.rfc" placeholder="Escribe RFC"
+          style="text-transform: uppercase;">
+        <mat-hint align="end">{{maestros.rfc?.length || 0}}/13</mat-hint>
+      </mat-form-field>
+      <div *ngIf="errors.rfc" class="invalid-feedback">{{ errors.rfc }}</div>
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Edad</mat-label>
+        <input matInput [(ngModel)]="maestros.edad" mask='00' placeholder="Escribe la edad">
+      </mat-form-field>
+      <div *ngIf="errors.edad" class="invalid-feedback">{{ errors.edad }}</div>
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Ocupación</mat-label>
+        <input matInput [(ngModel)]="maestros.ocupacion" placeholder="Escribe la ocupación">
+      </mat-form-field>
+      <div *ngIf="errors.ocupacion" class="invalid-feedback">{{ errors.ocupacion }}</div>
+
+      <!-- materias a impartir -->
+      <mat-label>Materias a cargo</mat-label>
+      <div class="materias-container">
+        <mat-checkbox [(ngModel)]="maestros.aplicacionesWeb" name="aplicacionesWeb">aplicaciones Web</mat-checkbox><br>
+        <mat-checkbox [(ngModel)]="maestros.programacion" name="programacion">Programacion 1</mat-checkbox><br>
+        <mat-checkbox [(ngModel)]="maestros.Basededatos" name="Basededatos">Base de datos</mat-checkbox><br>
+        <mat-checkbox [(ngModel)]="maestros.tecnologiasWeb" name="tecnologiasWeb">Tegnologias Web</mat-checkbox><br>
+        <mat-checkbox [(ngModel)]="maestros.mineriadedatos" name="mineriadedatos">Mineria de Datos</mat-checkbox><br>
+        <mat-checkbox [(ngModel)]="maestros.desarrollomovil" name="desarrollomovil">Desarrollo Movil</mat-checkbox><br>
+        <mat-checkbox [(ngModel)]="maestros.estructuradedatos" name="estructuradedatos">Estructura de
+          Datos</mat-checkbox><br>
+        <mat-checkbox [(ngModel)]="maestros.administracionderedes" name="administracionderedes">Administración de
+          Redes</mat-checkbox><br>
+        <mat-checkbox [(ngModel)]="maestros.ingenieriadesoftware" name="ingenieriadesoftware">Ingeniería de
+          Software</mat-checkbox><br>
+        <mat-checkbox [(ngModel)]="maestros.administracionso" name="administracionso">Administracion
+          S.O</mat-checkbox><br>
+      </div>
+
+      <div *ngIf="errors.materias" class="invalid-feedback">
+        {{ errors.materias }}
+      </div>
+
+      <!-- En esta clase se definen los botones para guardar o actualizar el registro -->
+      <div class="section-buttons">
+        <button class="btn btn-danger" (click)="regresar()">Cancelar</button>
+        <button *ngIf="!editar" class="btn btn-primary" type="submit" (click)="registrar()">Registrar</button>
+        <button *ngIf="editar" class="btn btn-primary" type="submit" (click)="actualizar()">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>

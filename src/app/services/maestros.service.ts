@@ -1,6 +1,4 @@
 
-
-
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FacadeService } from './facade.service';
@@ -14,7 +12,7 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class AlumnosService {
+export class MaestrosService {
 
   constructor(
     private http: HttpClient,
@@ -23,10 +21,10 @@ export class AlumnosService {
     private facadeService: FacadeService
   ) { }
 
-  public esquemaalumno(){
+  public esquemamaestros(){
     return {
       'rol':'',
-      'clave_alumno': '',
+      'clave_maestros': '',
       'first_name': '',
       'last_name': '',
       'email': '',
@@ -37,20 +35,32 @@ export class AlumnosService {
       'telefono': '',
       'rfc': '',
       'edad': '',
-      'ocupacion': ''
+      'ocupacion': '',
+
+      // materias a impartir
+      'aplicacionesWeb': false,
+      'programacion': false,
+      'Basededatos': false,
+      'tecnologiasWeb': false,
+      'mineriadedatos': false,
+      'desarrollomovil': false,
+      'estructuradedatos': false,
+      'administracionderedes': false,
+      'ingenieriadesoftware': false,
+      'administracionso': false
     }
   }
 
-  // Validaciones del formulario de registro de alumno
+  // Validaciones del formulario de registro de maestro
   //Validación para el formulario
-  public validaralumno(data: any, editar: boolean){
-    console.log("Validando alumno... ", data);
+  public validarmaestros(data: any, editar: boolean){
+    console.log("Validando maestro... ", data);
     let error: any = {};
 
     //Validaciones comunes
     //Validaciones comunes
-    if(!this.validatorService.required(data["clave_alumno"])){
-      error["clave_alumno"] = this.errorService.required;
+    if(!this.validatorService.required(data["clave_maestros"])){
+      error["clave_maestros"] = this.errorService.required;
     }
 
     if(!this.validatorService.required(data["first_name"])){
