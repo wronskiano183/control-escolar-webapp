@@ -4,15 +4,14 @@
     <div class="body-registro">
       <div class="row mt-3 mb-3">
         <div class="form-group col-12">
-          <label class="title-user" for="tipo_usuario">Ingresa los datos del Alumno</label>
+          <label class="title-user" for="tipo_usuario">Ingresa los datos del alumno</label>
         </div>
       </div>
-      <!-- Aquí empiezan los campos del formulario -->
       <mat-form-field class="mat-input" appearance="outline">
-        <mat-label>ID de alumno</mat-label>
-        <input matInput [(ngModel)]="alumno.clave_alumno" name="id" placeholder="Escribe clave de alumno">
+        <mat-label>ID/Matrícula</mat-label>
+        <input matInput [(ngModel)]="alumno.matricula" mask="000000000" name="id" placeholder="Escribe ID o matrícula">
       </mat-form-field>
-      <div *ngIf="errors.clave_alumno" class="invalid-feedback">{{ errors.clave_alumno }}</div>
+      <div *ngIf="errors.matricula" class="invalid-feedback">{{ errors.matricula }}</div>
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Nombre</mat-label>
@@ -49,38 +48,23 @@
       </mat-form-field>
       <div *ngIf="errors.confirmar_password" class="invalid-feedback">{{ errors.confirmar_password }}</div>
 
-      <!-- nuevo campo agregar fecha de nacimiento -->
-
+      <!-- Cambio de input de fecha -->
       <mat-form-field class="mat-input" appearance="outline">
-        <mat-label>00/00/0000</mat-label>
-        <input matInput minlength="8" maxlength="8" matInput [matDatepicker]="picker"
-          [(ngModel)]="alumno.fecha_nacimiento" placeholder="00/00/0000" style="text-transform: uppercase;"
-          (keypress)="soloNumeros($event)" [disabled]="editar">
-
+        <mat-label>Fecha de nacimiento</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="alumno.fecha_nacimiento" (focus)="picker.open()"
+          placeholder="Agregar fecha" (dateChange)="changeFecha($event)" type="string">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
+      <div *ngIf="errors.fecha_nacimiento" class="invalid-feedback">{{ errors.fecha_nacimiento }}</div>
 
-      <div *ngIf="errors.fecha_nacimiento" class="invalid-feedback">
-        {{ errors.fecha_nacimiento }}
-      </div>
-
-
-      <mat-form-field class="mat-input" appearance="outline">
-        <mat-label>Teléfono</mat-label>
-        <input matInput [(ngModel)]="alumno.telefono" mask='(000) 000-0000' placeholder="Escribe teléfono">
-      </mat-form-field>
-      <div *ngIf="errors.telefono" class="invalid-feedback">{{ errors.telefono }}</div>
-
-      <!-- campo de curp -->
       <mat-form-field class="mat-input mat-hint-margin" appearance="outline">
         <mat-label>CURP</mat-label>
-        <input matInput minlength="18" maxlength="18" [(ngModel)]="alumno.curp" placeholder="Escribe CURP"
+        <input matInput maxlength="18" [(ngModel)]="alumno.curp" placeholder="Escribe CURP"
           style="text-transform: uppercase;">
         <mat-hint align="end">{{alumno.curp?.length || 0}}/18</mat-hint>
       </mat-form-field>
       <div *ngIf="errors.curp" class="invalid-feedback">{{ errors.curp }}</div>
-
 
       <mat-form-field class="mat-input mat-hint-margin" appearance="outline">
         <mat-label>RFC</mat-label>
@@ -92,17 +76,22 @@
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Edad</mat-label>
-        <input matInput [(ngModel)]="alumno.edad" mask='00' placeholder="Escribe la edad">
+        <input matInput [(ngModel)]="alumno.edad" mask='00' placeholder="Escribe edad">
       </mat-form-field>
       <div *ngIf="errors.edad" class="invalid-feedback">{{ errors.edad }}</div>
 
       <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Teléfono</mat-label>
+        <input matInput [(ngModel)]="alumno.telefono" mask='(000) 000-0000' placeholder="Escribe teléfono">
+      </mat-form-field>
+      <div *ngIf="errors.telefono" class="invalid-feedback">{{ errors.telefono }}</div>
+
+      <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Ocupación</mat-label>
-        <input matInput [(ngModel)]="alumno.ocupacion" placeholder="Escribe la ocupación">
+        <input matInput [(ngModel)]="alumno.ocupacion" placeholder="Escribe ocupacion" (keypress)="soloLetras($event)">
       </mat-form-field>
       <div *ngIf="errors.ocupacion" class="invalid-feedback">{{ errors.ocupacion }}</div>
 
-      <!-- En esta clase se definen los botones para guardar o actualizar el registro -->
       <div class="section-buttons">
         <button class="btn btn-danger" (click)="regresar()">Cancelar</button>
         <button *ngIf="!editar" class="btn btn-primary" type="submit" (click)="registrar()">Registrar</button>

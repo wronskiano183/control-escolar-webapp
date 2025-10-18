@@ -1,9 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AlumnosService } from '../../services/alumnos.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FacadeService } from 'src/app/services/facade.service';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-
 
 @Component({
   selector: 'app-registro-alumnos',
@@ -15,37 +12,41 @@ export class RegistroAlumnosComponent implements OnInit {
   @Input() rol: string = "";
   @Input() datos_user: any = {};
 
-  public alumno:any = {};
-  public errors:any = {};
-  public editar:boolean = false;
-  public token: string = "";
-  public idUser: Number = 0;
-
   //Para contraseñas
   public hide_1: boolean = false;
   public hide_2: boolean = false;
   public inputType_1: string = 'password';
   public inputType_2: string = 'password';
 
-   constructor(
-    private location: Location,
-    public activatedRoute: ActivatedRoute,
-    private AlumnosService: AlumnosService,
-    private facadeService: FacadeService,
-    private router: Router
+  public alumno:any= {};
+  public token: string = "";
+  public errors:any={};
+  public editar:boolean = false;
+  public idUser: Number = 0;
+
+  constructor(
+    private router: Router,
+    private location : Location,
+    public activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.alumno = this.AlumnosService.esquemaalumno();
-    // Rol del usuario
-    this.alumno.rol = this.rol;
+  }
 
-    console.log("Datos alumno: ", this.alumno);
+  public regresar(){
+    this.location.back();
+  }
 
+  public registrar(){
+    // Lógica para registrar un nuevo alumno
+  }
+
+  public actualizar(){
+    // Lógica para actualizar los datos de un alumno existente
   }
 
   //Funciones para password
-  public showPassword()
+  showPassword()
   {
     if(this.inputType_1 == 'password'){
       this.inputType_1 = 'text';
@@ -57,7 +58,7 @@ export class RegistroAlumnosComponent implements OnInit {
     }
   }
 
-  public showPwdConfirmar()
+  showPwdConfirmar()
   {
     if(this.inputType_2 == 'password'){
       this.inputType_2 = 'text';
@@ -69,26 +70,15 @@ export class RegistroAlumnosComponent implements OnInit {
     }
   }
 
-  public regresar(){
-    this.location.back();
+  //Función para detectar el cambio de fecha
+  public changeFecha(event :any){
+    console.log(event);
+    console.log(event.value.toISOString());
+
+    this.alumno.fecha_nacimiento = event.value.toISOString().split("T")[0];
+    console.log("Fecha: ", this.alumno.fecha_nacimiento);
   }
 
-  public registrar(){
-    this.errors = {};
-    this.errors = this.AlumnosService.validaralumno(this.alumno, this.editar);
-    if(Object.keys(this.errors).length > 0){
-      return false;
-    }
-    // TODO: Aquí va toda la lógica para registrar al alumno
-    console.log("Pasó la validación");
-  }
-
-  public actualizar(){
-
-  }
-
-
-  // Función para los campos solo de datos alfabeticos
   public soloLetras(event: KeyboardEvent) {
     const charCode = event.key.charCodeAt(0);
     // Permitir solo letras (mayúsculas y minúsculas) y espacio
@@ -101,11 +91,4 @@ export class RegistroAlumnosComponent implements OnInit {
     }
   }
 
-  public soloNumeros(event: KeyboardEvent) {
-    const charCode = event.key.charCodeAt(0);
-    // Permitir solo números (0-9)
-    if (charCode < 48 || charCode > 57) {
-      event.preventDefault();
-    }
-  }
 }
