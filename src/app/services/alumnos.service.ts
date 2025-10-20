@@ -6,6 +6,8 @@ import { Injectable } from '@angular/core';
 import { FacadeService } from './facade.service';
 import { ErrorsService } from './tools/errors.service';
 import { ValidatorService } from './tools/validator.service';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -34,9 +36,9 @@ export class AlumnosService {
       'confirmar_password': '',
       'fecha_nacimiento': '',
       'curp': '',
-      'telefono': '',
       'rfc': '',
       'edad': '',
+      'telefono': '',
       'ocupacion': ''
     }
   }
@@ -116,4 +118,11 @@ export class AlumnosService {
 
   }
 
+  //funcion para registrar alumno
+  public registraralumno(data: any): Observable <any>{ //debe ser de tipo observable qpor que es una promesa que esta esperando algo
+    return this.http.post<any>(`${environment.url_api}/alumnos/`,data, httpOptions);
+  }
+
 }
+
+
