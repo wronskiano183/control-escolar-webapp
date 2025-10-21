@@ -10,7 +10,8 @@
       <!-- Aquí empiezan los campos del formulario -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>ID de administrador</mat-label>
-        <input matInput [(ngModel)]="admin.clave_admin" name="id" placeholder="Escribe clave de administrador">
+        <input matInput maxlength="9" [(ngModel)]="admin.clave_admin" name="id"
+          placeholder="Escribe clave de administrador" (keypress)="solonumeros($event)">
       </mat-form-field>
       <div *ngIf="errors.clave_admin" class="invalid-feedback">{{ errors.clave_admin }}</div>
 
@@ -58,7 +59,7 @@
       <mat-form-field class="mat-input mat-hint-margin" appearance="outline">
         <mat-label>RFC</mat-label>
         <input matInput minlength="12" maxlength="13" [(ngModel)]="admin.rfc" placeholder="Escribe RFC"
-          style="text-transform: uppercase;">
+          (keypress)="numero_letras($event)" style="text-transform: uppercase;">
         <mat-hint align="end">{{admin.rfc?.length || 0}}/13</mat-hint>
       </mat-form-field>
       <div *ngIf="errors.rfc" class="invalid-feedback">{{ errors.rfc }}</div>
@@ -71,7 +72,8 @@
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Ocupación</mat-label>
-        <input matInput [(ngModel)]="admin.ocupacion" placeholder="Escribe la ocupación">
+        <input matInput [(ngModel)]="admin.ocupacion" placeholder="Escribe la ocupación"
+          (keypress)="soloLetras($event)">
       </mat-form-field>
       <div *ngIf="errors.ocupacion" class="invalid-feedback">{{ errors.ocupacion }}</div>
 

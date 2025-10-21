@@ -126,7 +126,7 @@ export class RegistroAlumnosComponent implements OnInit {
     console.log("Fecha: ", this.alumno.fecha_nacimiento);
   }
 
-  public soloLetras(event: KeyboardEvent) {
+   public soloLetras(event: KeyboardEvent) {
     const charCode = event.key.charCodeAt(0);
     // Permitir solo letras (mayúsculas y minúsculas) y espacio
     if (
@@ -137,5 +137,26 @@ export class RegistroAlumnosComponent implements OnInit {
       event.preventDefault();
     }
   }
+  public solonumeros(event: KeyboardEvent) {
+    const charCode = event.key.charCodeAt(0);
 
+    if (
+      !(charCode >= 48 && charCode <= 57) && // solo numeros
+      charCode !== 47
+    ) {
+      event.preventDefault();
+    }
+  }
+
+   public numero_letras(event: KeyboardEvent) {
+    const charCode = event.key.charCodeAt(0);
+
+    if (
+      !(charCode >= 48 && charCode <= 57) && // solo numeros
+      !(charCode >= 65 && charCode <= 90)   // Letras mayúsculas
+
+    ) {
+      event.preventDefault();
+    }
+  }
 }

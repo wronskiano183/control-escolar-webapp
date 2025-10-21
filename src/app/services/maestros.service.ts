@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
 import { FacadeService } from './facade.service';
 import { ErrorsService } from './tools/errors.service';
 import { ValidatorService } from './tools/validator.service';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -31,11 +33,11 @@ export class MaestrosService {
       'password': '',
       'confirmar_password': '',
       'fecha_nacimiento': '',
-      'curp': '',
       'telefono': '',
       'rfc': '',
-      'edad': '',
-      'ocupacion': '',
+      'cubiculo': '',
+      'materias_json': [],
+      'area_investigacion': '',
 
       // materias a impartir
       'aplicacionesWeb': false,
@@ -105,25 +107,17 @@ export class MaestrosService {
       alert("La longitud de caracteres deL RFC es mayor, deben ser 13");
     }
 
-    if(!this.validatorService.required(data["edad"])){
-      error["edad"] = this.errorService.required;
-    }else if(!this.validatorService.numeric(data["edad"])){
-      alert("El formato es solo números");
-    }else if(data["edad"]<18){
-      error["edad"] = "La edad debe ser mayor o igual a 18 años";
-    }
-
     if(!this.validatorService.required(data["telefono"])){
       error["telefono"] = this.errorService.required;
-    }
-
-    if(!this.validatorService.required(data["ocupacion"])){
-      error["ocupacion"] = this.errorService.required;
     }
 
     //Return arreglo
     return error;
 
   }
+   //funcion para registrar maestro
+    public registrarmaestro(data: any): Observable <any>{ //debe ser de tipo observable qpor que es una promesa que esta esperando algo
+      return this.http.post<any>(`${environment.url_api}/maestros/`,data, httpOptions);
+    }
 
 }

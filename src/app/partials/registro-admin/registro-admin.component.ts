@@ -114,13 +114,35 @@ export class RegistroAdminComponent implements OnInit {
 
 
   // Función para los campos solo de datos alfabeticos
-  public soloLetras(event: KeyboardEvent) {
+   public soloLetras(event: KeyboardEvent) {
     const charCode = event.key.charCodeAt(0);
     // Permitir solo letras (mayúsculas y minúsculas) y espacio
     if (
       !(charCode >= 65 && charCode <= 90) &&  // Letras mayúsculas
       !(charCode >= 97 && charCode <= 122) && // Letras minúsculas
       charCode !== 32                         // Espacio
+    ) {
+      event.preventDefault();
+    }
+  }
+  public solonumeros(event: KeyboardEvent) {
+    const charCode = event.key.charCodeAt(0);
+
+    if (
+      !(charCode >= 48 && charCode <= 57) && // solo numeros
+      charCode !== 47
+    ) {
+      event.preventDefault();
+    }
+  }
+
+   public numero_letras(event: KeyboardEvent) {
+    const charCode = event.key.charCodeAt(0);
+
+    if (
+      !(charCode >= 48 && charCode <= 57) && // solo numeros
+      !(charCode >= 65 && charCode <= 90)   // Letras mayúsculas
+
     ) {
       event.preventDefault();
     }
