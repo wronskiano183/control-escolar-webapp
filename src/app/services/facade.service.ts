@@ -58,6 +58,23 @@ export class FacadeService {
     return errors;
   }
 
+  //Iniciar sesión
+  public login(username:String, password:String){
+    let data = {
+      username: username,
+      password: password
+    }
+    return this.http.post<any>(`${environment.url_api}/login/`,data);
+  }
+
+  //Cerrar sesión
+  public logout() {
+    let headers: any;
+    let token = this.getSessionToken();
+    headers = new HttpHeaders({ 'Content-Type': 'application/json' , 'Authorization': 'Bearer '+token});
+    return this.http.get<any>(`${environment.url_api}/logout/`, {headers: headers});
+  }
+
   // Funciones para utilizar las cookies en web
   retrieveSignedUser(){
     var headers: any;

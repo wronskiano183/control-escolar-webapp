@@ -33,6 +33,10 @@ import { CookieService } from 'ngx-cookie-service';
 
 // third party modules
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { HomeScreenComponent } from './screens/home-screen/home-screen.component';
+import { AlumnosScreenComponent } from './screens/alumnos-screen/alumnos-screen.component';
+import { MaestrosScreenComponent } from './screens/maestros-screen/maestros-screen.component';
+import { AdminScreenComponent } from './screens/admin-screen/admin-screen.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +47,11 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     DashboardLayoutComponent,
     RegistroAdminComponent,
     RegistroAlumnosComponent,
-    RegistroMaestrosComponent
+    RegistroMaestrosComponent,
+    HomeScreenComponent,
+    AlumnosScreenComponent,
+    MaestrosScreenComponent,
+    AdminScreenComponent
   ],
   imports: [
     BrowserModule,
