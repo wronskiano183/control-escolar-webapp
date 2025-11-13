@@ -27,7 +27,13 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
-
+//PAGINACION
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatSidenavModule } from '@angular/material/sidenav';
+//Para el paginator en español
+import { getSpanishPaginatorIntl } from './shared/spanish-paginator-intl';
 //Ngx -cookie-service
 import { CookieService } from 'ngx-cookie-service';
 
@@ -37,6 +43,8 @@ import { HomeScreenComponent } from './screens/home-screen/home-screen.component
 import { AlumnosScreenComponent } from './screens/alumnos-screen/alumnos-screen.component';
 import { MaestrosScreenComponent } from './screens/maestros-screen/maestros-screen.component';
 import { AdminScreenComponent } from './screens/admin-screen/admin-screen.component';
+import { NavbarUserComponent } from './partials/navbar-user/navbar-user.component';
+import { SidebarComponent } from './partials/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +59,9 @@ import { AdminScreenComponent } from './screens/admin-screen/admin-screen.compon
     HomeScreenComponent,
     AlumnosScreenComponent,
     MaestrosScreenComponent,
-    AdminScreenComponent
+    AdminScreenComponent,
+    NavbarUserComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -69,11 +79,16 @@ import { AdminScreenComponent } from './screens/admin-screen/admin-screen.compon
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSidenavModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [
     CookieService,
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX' }, // Cambia el locale de fecha a español
+    { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },
     provideNgxMask()
   ],
   bootstrap: [AppComponent]

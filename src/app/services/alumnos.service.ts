@@ -118,11 +118,33 @@ export class AlumnosService {
 
   }
 
-  //funcion para registrar alumno
-  public registraralumno(data: any): Observable <any>{ //debe ser de tipo observable qpor que es una promesa que esta esperando algo
-    return this.http.post<any>(`${environment.url_api}/alumnos/`,data, httpOptions);
+//Aquí van los servicios HTTP
+  //Servicio para registrar un nuevo alumno
+  public registrarAlumno (data: any): Observable <any>{
+    // Verificamos si existe el token de sesión
+    const token = this.facadeService.getSessionToken();
+    let headers: HttpHeaders;
+    if (token) {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
+    } else {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    }
+    return this.http.post<any>(`${environment.url_api}/alumnos/`, data, { headers });
   }
-
+//Servicio para obtener la lista de alumnos
+  public obtenerListaAlumnos(): Observable<any>{
+    // Verificamos si existe el token de sesión
+    const token = this.facadeService.getSessionToken();
+    let headers: HttpHeaders;
+    if (token) {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
+    } else {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    }
+    return this.http.get<any>(`${environment.url_api}/lista-alumnos/`, { headers });
+  }
 }
+
+
 
 

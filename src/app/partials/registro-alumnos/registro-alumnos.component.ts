@@ -87,7 +87,7 @@ export class RegistroAlumnosComponent implements OnInit {
       return false;
     }
     // Si pasa todas las validaciones se registra el alumno
-    this.AlumnosService.registraralumno(this.alumno).subscribe({//es una promesa va a esperar 2 respuestas la de exito y la de error
+    this.AlumnosService.registrarAlumno(this.alumno).subscribe({//es una promesa va a esperar 2 respuestas la de exito y la de error
       next: (response:any) => {
         //Aquí va la ejecución del servicio si todo es correcto
         alert('Alumno registrado con éxito');

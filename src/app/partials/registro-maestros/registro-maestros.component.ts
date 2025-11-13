@@ -109,7 +109,7 @@ public registrar(){
       return false;
     }
     // Si pasa todas las validaciones se registra el alumno
-    this.MaestrosService.registrarmaestro(this.maestro).subscribe({//es una promesa va a esperar 2 respuestas la de exito y la de error
+    this.MaestrosService.registrarMaestro(this.maestro).subscribe({//es una promesa va a esperar 2 respuestas la de exito y la de error
       next: (response:any) => {
         //Aquí va la ejecución del servicio si todo es correcto
         alert('Maestro registrado con éxito');
