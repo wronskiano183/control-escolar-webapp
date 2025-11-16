@@ -16,7 +16,8 @@ const routes: Routes = [
   children: [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginScreenComponent },
-    { path: 'registro-usuarios', component: RegistroUsuariosScreenComponent }
+    { path: 'registro-usuarios', component: RegistroUsuariosScreenComponent },
+    { path: 'registro-usuarios/:rol/:id', component: RegistroUsuariosScreenComponent }
   ]
   },
   {

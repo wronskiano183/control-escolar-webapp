@@ -35,13 +35,27 @@ export class RegistroAdminComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.admin = this.AdministradoresService.esquemaAdmin();
-    // Rol del usuario
-    this.admin.rol = this.rol;
-
-    console.log("Datos admin: ", this.admin);
+    //El primer if valida si existe un parámetro en la URL
+    if(this.activatedRoute.snapshot.params['id'] != undefined){
+      this.editar = true;
+      //Asignamos a nuestra variable global el valor del ID que viene por la URL
+      this.idUser = this.activatedRoute.snapshot.params['id'];
+      console.log("ID User: ", this.idUser);
+      //Al iniciar la vista asignamos los datos del user
+      this.admin = this.datos_user;
+    }else{
+      // Si no va a this.editar, entonces inicializamos el JSON para registro nuevo
+      this.admin = this.AdministradoresService.esquemaAdmin();
+      this.admin.rol = this.rol;
+      this.token = this.facadeService.getSessionToken();
+    }
+    //Imprimir datos en consola
+    console.log("Admin: ", this.admin);
   }
 
+  public regresar(){
+    this.location.back();
+  }
   //Funciones para password
   public showPassword()
   {
@@ -65,10 +79,6 @@ export class RegistroAdminComponent implements OnInit {
       this.inputType_2 = 'password';
       this.hide_2 = false;
     }
-  }
-
-  public regresar(){
-    this.location.back();
   }
 
    public registrar(){
@@ -109,6 +119,26 @@ export class RegistroAdminComponent implements OnInit {
 
 
   public actualizar(){
+ // Validación de los datos
+    this.errors = {};
+    this.errors = this.AdministradoresService.validarAdmin(this.admin, this.editar);
+    if(Object.keys(this.errors).length > 0){
+      return false;
+    }
+    // Ejecutamos el servicio de actualización
+    this.AdministradoresService.actualizarAdmin(this.admin).subscribe(
+      (response) => {
+        // Redirigir o mostrar mensaje de éxito
+        alert("Administrador actualizado exitosamente");
+        console.log("Administrador actualizado: ", response);
+        this.router.navigate(["administrador"]);
+      },
+      (error) => {
+        // Manejar errores de la API
+        alert("Error al actualizar administrador");
+        console.error("Error al actualizar administrador: ", error);
+      }
+    );
 
   }
 
