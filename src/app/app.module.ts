@@ -27,6 +27,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
+import {MatDialogModule} from '@angular/material/dialog';
 //PAGINACION
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -45,6 +46,7 @@ import { MaestrosScreenComponent } from './screens/maestros-screen/maestros-scre
 import { AdminScreenComponent } from './screens/admin-screen/admin-screen.component';
 import { NavbarUserComponent } from './partials/navbar-user/navbar-user.component';
 import { SidebarComponent } from './partials/sidebar/sidebar.component';
+import { EliminarUserModalComponent } from './modals/eliminar-user-modal/eliminar-user-modal.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,8 @@ import { SidebarComponent } from './partials/sidebar/sidebar.component';
     MaestrosScreenComponent,
     AdminScreenComponent,
     NavbarUserComponent,
-    SidebarComponent
+    SidebarComponent,
+    EliminarUserModalComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +86,8 @@ import { SidebarComponent } from './partials/sidebar/sidebar.component';
     MatSidenavModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatDialogModule
   ],
   providers: [
     CookieService,

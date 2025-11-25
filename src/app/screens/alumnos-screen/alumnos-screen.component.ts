@@ -99,6 +99,7 @@ export class AlumnosScreenComponent implements OnInit {
   }
 
   public goEditar(idUser: number) {
+    this.router.navigate(["registro-usuarios/alumnos/" + idUser]);
 
   }
 

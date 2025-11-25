@@ -12,7 +12,7 @@
         <input matInput [(ngModel)]="maestro.clave_maestros" mask="000000000" name="id"
           placeholder="Escribe ID de trabajador">
       </mat-form-field>
-      <div *ngIf="errors.clave_maestros" class="invalid-feedback">{{ errors.clave_maestros }}</div>
+      <div *ngIf="errors.id_trabajador" class="invalid-feedback">{{ errors.id_trabajador }}</div>
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Nombre</mat-label>
