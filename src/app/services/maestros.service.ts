@@ -26,7 +26,7 @@ export class MaestrosService {
   public esquemamaestros(){
     return {
       'rol':'',
-      'clave_maestros': '',
+      'id_trabajador': '',
       'first_name': '',
       'last_name': '',
       'email': '',
@@ -61,8 +61,8 @@ export class MaestrosService {
 
     //Validaciones comunes
     //Validaciones comunes
-    if(!this.validatorService.required(data["clave_maestros"])){
-      error["clave_maestros"] = this.errorService.required;
+    if(!this.validatorService.required(data["id_trabajador"])){
+      error["id_trabajador"] = this.errorService.required;
     }
 
     if(!this.validatorService.required(data["first_name"])){

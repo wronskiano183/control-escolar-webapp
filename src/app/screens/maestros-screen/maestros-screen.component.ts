@@ -82,8 +82,10 @@ export class MaestrosScreenComponent implements OnInit {
             usuario.first_name = usuario.user.first_name;
             usuario.last_name = usuario.user.last_name;
             usuario.email = usuario.user.email;
+            usuario.id_trabajador = usuario.clave_maestros || '';
           });
           console.log("Maestros: ", this.lista_maestros);
+
 
           //this.dataSource = new MatTableDataSource<DatosUsuario>(this.lista_maestros as DatosUsuario[]);
           this.dataSource.data = this.lista_maestros;
