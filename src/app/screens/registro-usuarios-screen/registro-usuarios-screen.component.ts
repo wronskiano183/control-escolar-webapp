@@ -55,6 +55,30 @@ export class RegistroUsuariosScreenComponent implements OnInit {
       //Al iniciar la vista obtiene el usuario por su ID
       this.obtenerUserByID();
     }
+    else{
+      console.log("Es la primera ves que se va a regsitrar");//como sale entonces reutilizo el url que ya se habia craado em app routing
+      if(this.rol == "administrador"){
+        this.isAdmin = true;
+        this.isAlumno = false;
+        this.isMaestro = false;
+        this.tipo_user = "administrador";
+        this.user.tipo_usuario = "administrador";
+      }else if (this.rol == "alumno"){
+        this.isAdmin = false;
+        this.isAlumno = true;
+        this.isMaestro = false;
+        this.tipo_user = "alumno";
+        this.user.tipo_usuario = "alumno";
+      }else if (this.rol == "maestro"){
+        this.isAdmin = false;
+        this.isAlumno = false;
+        this.isMaestro = true;
+        this.tipo_user = "maestro";
+        this.user.tipo_usuario = "maestro";
+      }
+
+
+    }
   }
 
     //Obtener usuario por ID
@@ -140,5 +164,6 @@ export class RegistroUsuariosScreenComponent implements OnInit {
   public goBack() {
     this.location.back();
   }
+
 
 }

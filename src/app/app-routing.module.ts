@@ -18,7 +18,8 @@ const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginScreenComponent },
     { path: 'registro-usuarios', component: RegistroUsuariosScreenComponent },
-    { path: 'registro-usuarios/:rol/:id', component: RegistroUsuariosScreenComponent }
+    { path: 'registro-usuarios/:rol/:id', component: RegistroUsuariosScreenComponent },
+    { path: 'registro-usuarios/:rol', component: RegistroUsuariosScreenComponent }    //este es el que reutilizamos como no manda el id cumple la conducion
 
   ]
   },
