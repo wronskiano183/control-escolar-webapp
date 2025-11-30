@@ -128,7 +128,7 @@ public registrar(){
 
         //Validar si se registro que entonces navegue en la vista de mestros
         if(this.token != ""){
-          this.router.navigate(['maestro']);
+          this.router.navigate(['maestros']);
         }else{
           this.router.navigate(['/']);
         }
