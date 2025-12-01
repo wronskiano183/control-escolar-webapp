@@ -24,6 +24,7 @@ export class RegistroUsuariosScreenComponent implements OnInit {
   public isAdmin:boolean = false;
   public isAlumno:boolean = false;
   public isMaestro:boolean = false;
+  public isMaterias:boolean = false;
 
   public tipo_user:string = "";
 
@@ -57,6 +58,7 @@ export class RegistroUsuariosScreenComponent implements OnInit {
     }
     else{
       console.log("Es la primera ves que se va a regsitrar");//como sale entonces reutilizo el url que ya se habia craado em app routing
+
       if(this.rol == "administrador"){
         this.isAdmin = true;
         this.isAlumno = false;
@@ -75,7 +77,14 @@ export class RegistroUsuariosScreenComponent implements OnInit {
         this.isMaestro = true;
         this.tipo_user = "maestro";
         this.user.tipo_usuario = "maestro";
-      }
+      }else if (this.rol == "materias"){
+          this.isAdmin = false;
+          this.isAlumno = false;
+          this.isMaestro = false;
+          this.isMaterias = true;
+          this.tipo_user = "materias";
+          this.user.tipo_usuario = "materias";
+        }
 
 
     }
@@ -142,22 +151,31 @@ export class RegistroUsuariosScreenComponent implements OnInit {
 
   public radioChange(event: MatRadioChange) {
     console.log(event);
-    if(event.value == "administrador"){
-      this.isAdmin = true;
-      this.isAlumno = false;
-      this.isMaestro = false;
-      this.tipo_user = "administrador";
-    }else if (event.value == "alumno"){
-      this.isAdmin = false;
-      this.isAlumno = true;
-      this.isMaestro = false;
-      this.tipo_user = "alumno";
-    }else if (event.value == "maestro"){
-      this.isAdmin = false;
-      this.isAlumno = false;
-      this.isMaestro = true;
-      this.tipo_user = "maestro";
-    }
+  if(event.value == "administrador"){
+    this.isAdmin = true;
+    this.isAlumno = false;
+    this.isMaestro = false;
+    this.isMaterias = false;  // ← Asegurar que se desactiven los otros
+    this.tipo_user = "administrador";
+  }else if (event.value == "alumno"){
+    this.isAdmin = false;
+    this.isAlumno = true;
+    this.isMaestro = false;
+    this.isMaterias = false;
+    this.tipo_user = "alumno";
+  }else if (event.value == "maestro"){
+    this.isAdmin = false;
+    this.isAlumno = false;
+    this.isMaestro = true;
+    this.isMaterias = false;
+    this.tipo_user = "maestro";
+  }else if (event.value == "materias"){  // ← Cambiar a "materias" (plural)
+    this.isAdmin = false;
+    this.isAlumno = false;
+    this.isMaestro = false;
+    this.isMaterias = true;
+    this.tipo_user = "materias";
+  }
   }
 
   //Función para regresar a la pantalla anterior

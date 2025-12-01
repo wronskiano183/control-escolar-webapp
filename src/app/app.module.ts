@@ -38,6 +38,9 @@ import { getSpanishPaginatorIntl } from './shared/spanish-paginator-intl';
 //Ngx -cookie-service
 import { CookieService } from 'ngx-cookie-service';
 
+//Timepicker
+import {MatTimepickerModule} from '@angular/material/timepicker';
+
 // Modulo para las gráficas
 import { NgChartsModule } from 'ng2-charts';
 
@@ -51,6 +54,8 @@ import { NavbarUserComponent } from './partials/navbar-user/navbar-user.componen
 import { SidebarComponent } from './partials/sidebar/sidebar.component';
 import { EliminarUserModalComponent } from './modals/eliminar-user-modal/eliminar-user-modal.component';
 import { GraficasScreenComponent } from './screens/graficas-screen/graficas-screen.component';
+import { RegistroMateriasComponent } from './partials/registro-materias/registro-materias.component';
+
 
 @NgModule({
   declarations: [
@@ -69,7 +74,9 @@ import { GraficasScreenComponent } from './screens/graficas-screen/graficas-scre
     NavbarUserComponent,
     SidebarComponent,
     EliminarUserModalComponent,
-    GraficasScreenComponent
+    GraficasScreenComponent,
+    RegistroMateriasComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -93,7 +100,8 @@ import { GraficasScreenComponent } from './screens/graficas-screen/graficas-scre
     MatPaginatorModule,
     MatSortModule,
     MatDialogModule,
-    NgChartsModule
+    NgChartsModule,
+    MatTimepickerModule
   ],
   providers: [
     CookieService,

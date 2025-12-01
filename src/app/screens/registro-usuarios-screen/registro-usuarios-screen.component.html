@@ -48,6 +48,13 @@
               <mat-icon class="me-1" fontIcon="person"></mat-icon>
               <span class="text-radio">Maestro</span>
             </mat-radio-button>
+
+            <mat-radio-button class="role-pill" value="materias" [disabled]="true"
+              *ngIf="!facadeService.getUserGroup() || facadeService.getUserGroup() === 'administrador'">
+              <mat-icon class="me-1" fontIcon="library_books"></mat-icon>
+              <span class="text-radio">Materias</span>
+            </mat-radio-button>
+
           </mat-radio-group>
         </div>
       </mat-card-content>
@@ -56,6 +63,9 @@
     <div class="forms-area">
       <!-- Formularios (vistas) de cada usuario (inyección dinámica) -->
       <app-registro-admin *ngIf="isAdmin" [rol]="tipo_user" [datos_user]="user"></app-registro-admin>
+
+      <app-registro-materias *ngIf="isMaterias" [rol]="tipo_user"
+        [datos_user]="editar ? user : null"></app-registro-materias>
 
       <app-registro-alumnos *ngIf="isAlumno" [rol]="tipo_user"
         [datos_user]="editar ? user : null"></app-registro-alumnos>

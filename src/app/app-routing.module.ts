@@ -9,6 +9,7 @@ import { HomeScreenComponent } from './screens/home-screen/home-screen.component
 import { MaestrosScreenComponent } from './screens/maestros-screen/maestros-screen.component';
 import { AdminScreenComponent } from './screens/admin-screen/admin-screen.component';
 import { GraficasScreenComponent } from './screens/graficas-screen/graficas-screen.component';
+import { RegistroMateriasComponent } from './partials/registro-materias/registro-materias.component';
 
 const routes: Routes = [
   {
@@ -19,7 +20,9 @@ const routes: Routes = [
     { path: 'login', component: LoginScreenComponent },
     { path: 'registro-usuarios', component: RegistroUsuariosScreenComponent },
     { path: 'registro-usuarios/:rol/:id', component: RegistroUsuariosScreenComponent },
-    { path: 'registro-usuarios/:rol', component: RegistroUsuariosScreenComponent }    //este es el que reutilizamos como no manda el id cumple la conducion
+    { path: 'registro-usuarios/:rol', component: RegistroUsuariosScreenComponent },    //este es el que reutilizamos como no manda el id cumple la conducion
+
+
 
   ]
   },
@@ -31,7 +34,8 @@ const routes: Routes = [
       { path: 'administrador', component: AdminScreenComponent }, // Keep legacy route
       { path: 'alumnos', component: AlumnosScreenComponent },
       { path: 'maestros', component: MaestrosScreenComponent },
-      { path: 'graficas', component: GraficasScreenComponent }
+      { path: 'graficas', component: GraficasScreenComponent },
+
         ]
   },
   // fallback route
