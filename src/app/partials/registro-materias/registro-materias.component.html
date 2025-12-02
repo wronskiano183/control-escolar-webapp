@@ -9,7 +9,7 @@
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>NRC</mat-label>
-        <input matInput [(ngModel)]="materias.nrc" mask="0000000" name="id" placeholder="Escribe NRC de la materia">
+        <input matInput [(ngModel)]="materias.nrc" mask="00000?" name="id" placeholder="Escribe NRC de la materia">
       </mat-form-field>
       <div *ngIf="errors.nrc" class="invalid-feedback">{{ errors.nrc }}</div>
 
@@ -22,7 +22,7 @@
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Seccion</mat-label>
-        <input matInput [(ngModel)]="materias.seccion" mask="0000000" name="id" placeholder="Escribe la seccion">
+        <input matInput [(ngModel)]="materias.seccion" mask="000" name="id" placeholder="Escribe la seccion">
       </mat-form-field>
       <div *ngIf="errors.seccion" class="invalid-feedback">{{ errors.seccion }}</div>
 
@@ -38,7 +38,7 @@
             <div class="d-checkbox-nombre">{{dia.nombre}}</div>
           </mat-checkbox>
         </div>
-        <div *ngIf="errors.dias_json" class="invalid-feedback">{{ errors.dias_json }}</div>
+        <div *ngIf="errors.dias" class="invalid-feedback">{{ errors.dias }}</div>
       </div>
 
       <!-- Hora Inicio -->
@@ -61,7 +61,8 @@
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Salon</mat-label>
-        <input matInput [(ngModel)]="materias.salon" name="id" placeholder="Escriba el salon">
+        <input matInput [(ngModel)]="materias.salon" name="id" placeholder="Escriba el salon"
+          (keypress)="numero_letras($event)" maxlength="15">
       </mat-form-field>
       <div *ngIf="errors.salon" class="invalid-feedback">{{ errors.salon }}</div>
 

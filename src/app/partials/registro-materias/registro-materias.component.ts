@@ -35,9 +35,9 @@ export class RegistroMateriasComponent implements OnInit {
 
   //Para el select
   public areas: any[] = [
-    {value: '1', viewValue: 'Ing. en Cs. de la Computación'},
-    {value: '2', viewValue: 'Lic. en Cs. de la Computación'},
-    {value: '3', viewValue: 'Ing. en Tecnologías de la Inf.'},
+    {value: '1', viewValue: 'Ingeniería en Ciencias de la Computación'},
+    {value: '2', viewValue: 'Licenciatura en Ciencias de la Computación'},
+    {value: '3', viewValue: 'Ingeniería en Tecnologías de la Información'},
 
   ];
 
@@ -149,55 +149,6 @@ export class RegistroMateriasComponent implements OnInit {
 
   }
 
-  public validarMaterias(data: any, editar: boolean){
-  let errors:any = {};
-
-  if(!data.nrc || data.nrc.trim() === ""){
-    errors.nrc = "El NRC es obligatorio";
-  }
-
-  if(!data.nombre_materia || data.nombre_materia.trim() === ""){
-    errors.nombre_materia = "El nombre de la materia es obligatorio";
-  }
-
-  if(!data.seccion || data.seccion.trim() === ""){
-    errors.seccion = "La sección es obligatoria";
-  }
-
-  if(!data.dias || data.dias.length === 0){
-    errors.dias = "Selecciona al menos un día";
-  }
-
-  if(!data.hora_inicio){
-    errors.hora_inicio = "La hora de inicio es obligatoria";
-  }
-
-  if(!data.hora_final){
-    errors.hora_final = "La hora final es obligatoria";
-  }
-
-  if(data.hora_inicio && data.hora_final && data.hora_inicio >= data.hora_final){
-    errors.hora_final = "La hora final debe ser mayor que la de inicio";
-  }
-
-  if(!data.salon){
-    errors.salon = "El salón es obligatorio";
-  }
-
-  if(!data.programa_educativo){
-    errors.programa_educativo = "El programa educativo es obligatorio";
-  }
-
-  if(!data.profesor_asignado){
-    errors.profesor_asignado = "Debes seleccionar un profesor";
-  }
-
-  if(!data.creditos){
-    errors.creditos = "Los créditos son obligatorios";
-  }
-
-  return errors;
-}
 
 
 
@@ -232,13 +183,28 @@ public registrar(){
         }
       },
       error: (error:any) => {
-        if(error.status === 422){
-          this.errors = error.error.errors;
-        } else {
-          alert('Error al registrar la materia');
-        }
-      }
-    });
+       // ERROR ESPECÍFICO DE NRC DUPLICADO
+    if (error.status === 400 && error.error?.nrc) {
+      const mensajeError = Array.isArray(error.error.nrc)
+        ? error.error.nrc[0]
+        : error.error.nrc;
+
+      // error por si el nrc ya esta registrdo
+      alert(`Error: El NRC ${this.materias.nrc} ya está registrado en el sistema.\n\nPor favor, usa un NRC diferente.`);
+
+      // También poner el error en el formulario
+      this.errors.nrc = "Este NRC ya existe";
+    }
+    // Mantienes tu manejo actual para error 422
+    else if(error.status === 422){
+      this.errors = error.error.errors;
+    }
+    // Error genérico para otros casos
+    else {
+      alert('Error al registrar la materia');
+    }
+  }
+});
 }
 
   public actualizar(){
@@ -369,8 +335,9 @@ public convertirHora24a12(hora24: string): string {
 
     if (
       !(charCode >= 48 && charCode <= 57) && // solo numeros
-      !(charCode >= 65 && charCode <= 90)   // Letras mayúsculas
-
+      !(charCode >= 65 && charCode <= 90) && // Letras mayúsculas
+      !(charCode >= 97 && charCode <= 112) &&// letrras minusculas
+       charCode !== 32// espacio
     ) {
       event.preventDefault();
     }
