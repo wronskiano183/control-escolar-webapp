@@ -32,6 +32,11 @@
           <mat-icon>school</mat-icon>
           <span>Alumnos</span>
         </li>
+        <!-- Materias - Available for all users -->
+        <li *ngIf="canSeeAdminItems()" routerLink="/materias" routerLinkActive="active" (click)="closeSidebar()">
+          <mat-icon>school</mat-icon>
+          <span>Materias</span>
+        </li>
 
         <!-- Gráficas - Available for all users -->
         <li *ngIf="canSeeStudentItems()" routerLink="/graficas" routerLinkActive="active" (click)="closeSidebar()">

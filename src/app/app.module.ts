@@ -55,6 +55,8 @@ import { SidebarComponent } from './partials/sidebar/sidebar.component';
 import { EliminarUserModalComponent } from './modals/eliminar-user-modal/eliminar-user-modal.component';
 import { GraficasScreenComponent } from './screens/graficas-screen/graficas-screen.component';
 import { RegistroMateriasComponent } from './partials/registro-materias/registro-materias.component';
+import { ScreenMateriasComponent } from './screens/screen-materias/screen-materias.component';
+
 
 
 @NgModule({
@@ -76,6 +78,8 @@ import { RegistroMateriasComponent } from './partials/registro-materias/registro
     EliminarUserModalComponent,
     GraficasScreenComponent,
     RegistroMateriasComponent,
+    ScreenMateriasComponent,
+
 
   ],
   imports: [

@@ -10,6 +10,7 @@ import { MaestrosScreenComponent } from './screens/maestros-screen/maestros-scre
 import { AdminScreenComponent } from './screens/admin-screen/admin-screen.component';
 import { GraficasScreenComponent } from './screens/graficas-screen/graficas-screen.component';
 import { RegistroMateriasComponent } from './partials/registro-materias/registro-materias.component';
+import { ScreenMateriasComponent } from './screens/screen-materias/screen-materias.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,7 @@ const routes: Routes = [
       { path: 'alumnos', component: AlumnosScreenComponent },
       { path: 'maestros', component: MaestrosScreenComponent },
       { path: 'graficas', component: GraficasScreenComponent },
+      { path: 'materias', component: ScreenMateriasComponent },
 
         ]
   },

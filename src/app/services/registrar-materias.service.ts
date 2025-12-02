@@ -111,6 +111,24 @@ public registrarMateria(data: any): Observable<any> {
   return this.http.post<any>(`${environment.url_api}/materias/`, data, { headers });
 }
 
+// Servicio para obtener la lista de materias
+public obtenerListaMaterias(): Observable<any> {
+  // Verificamos si existe el token de sesión
+  const token = this.facadeService.getSessionToken();
+  let headers: HttpHeaders;
+
+  if (token) {
+    headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
+  } else {
+    headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  }
+
+  return this.http.get<any>(`${environment.url_api}/lista-materias/`, { headers });
+}
+
 
 
 }
