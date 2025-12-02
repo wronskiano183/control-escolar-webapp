@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { FacadeService } from 'src/app/services/facade.service';
 import { RegistrarMateriasService } from '../../services/registrar-materias.service';
+import { MaestrosService } from 'src/app/services/maestros.service';
+
 
 @Component({
   selector: 'app-registro-materias',
@@ -14,6 +16,10 @@ export class RegistroMateriasComponent implements OnInit {
   @Input() rol: string = "";
   @Input() datos_user: string = "";
 
+
+
+  // Agrega esta propiedad 'errors' si no existe
+
    //Para contraseñas
   public hide_1: boolean = false;
   public hide_2: boolean = false;
@@ -21,6 +27,7 @@ export class RegistroMateriasComponent implements OnInit {
   public inputType_2: string = 'password';
 
   public materias:any = {};
+
   public errors:any = {};
   public editar:boolean = false;
   public token: string = "";
@@ -34,13 +41,16 @@ export class RegistroMateriasComponent implements OnInit {
 
   ];
 
+  //Para el select
+  public profesors: any[] = [];
+
   public dias: any[] = [
   {value: '1', nombre: 'Lunes'},
   {value: '2', nombre: 'Martes'},
-  {value: '3', nombre: 'Miércoles'},
+  {value: '3', nombre: 'Miercoles'},
   {value: '4', nombre: 'Jueves'},
   {value: '5', nombre: 'Viernes'},
-  {value: '6', nombre: 'Sábado'},
+  {value: '6', nombre: 'Sabado'},
 ];
 
 
@@ -49,13 +59,18 @@ export class RegistroMateriasComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     private facadeService: FacadeService,
     private router: Router,
-    private RegistrarMateriasService: RegistrarMateriasService
+    private RegistrarMateriasService: RegistrarMateriasService,
+    private maestrosService: MaestrosService
 
   ){
 
   }
 
   ngOnInit(): void{
+
+
+    this.cargarProfesores();
+    console.log("Profesores: ", this.profesors);
 
      //El primer if valida si existe un parámetro en la URL
     if(this.activatedRoute.snapshot.params['id'] != undefined){
@@ -66,8 +81,15 @@ export class RegistroMateriasComponent implements OnInit {
       //Al iniciar la vista asignamos los datos del user
       this.materias = this.datos_user;
     }else{
+
       // Si no va a this.editar, entonces inicializamos el JSON para registro nuevo
        this.materias = this.RegistrarMateriasService.esquemamaterias();
+          if (this.materias.hora_inicio) {
+        this.materias.hora_inicio = this.materias.hora_inicio;
+      }
+      if (this.materias.hora_final) {
+        this.materias.hora_final = this.materias.hora_final;
+      }
       this.materias.rol = this.rol;
       this.token = this.facadeService.getSessionToken();
     }
@@ -76,6 +98,26 @@ export class RegistroMateriasComponent implements OnInit {
 
 
   }
+
+  public cargarProfesores() {  //para cargar los maestros reutilizar¿mos la funcion del servicio de maestros que ya tenemos
+  this.maestrosService.obtenerListaMaestros().subscribe({ // y reutilizamos el servidcio obtenerListaMaestros
+    next: (response) => {
+      console.log("Maestros cargados:", response);
+
+      // mapear los datos reciviods
+      this.profesors = response.map((m: any) => ({ //hacemos la llamada al servicio y transformasos el array a un response cada elemento
+        value: m.id.toString(), // Usar el ID del maestrs
+        viewValue: `${m.user.first_name} ${m.user.last_name}`
+      }));
+
+      console.log("Profesores mapeados: ", this.profesors);
+    },
+    error: (error) => {
+      console.error("Error cargando profesores", error);
+
+    }
+  });
+}
 
   //Funciones para password
   showPassword()
@@ -104,15 +146,170 @@ export class RegistroMateriasComponent implements OnInit {
 
    public regresar(){
     this.location.back();
+
   }
+
+  public validarMaterias(data: any, editar: boolean){
+  let errors:any = {};
+
+  if(!data.nrc || data.nrc.trim() === ""){
+    errors.nrc = "El NRC es obligatorio";
+  }
+
+  if(!data.nombre_materia || data.nombre_materia.trim() === ""){
+    errors.nombre_materia = "El nombre de la materia es obligatorio";
+  }
+
+  if(!data.seccion || data.seccion.trim() === ""){
+    errors.seccion = "La sección es obligatoria";
+  }
+
+  if(!data.dias || data.dias.length === 0){
+    errors.dias = "Selecciona al menos un día";
+  }
+
+  if(!data.hora_inicio){
+    errors.hora_inicio = "La hora de inicio es obligatoria";
+  }
+
+  if(!data.hora_final){
+    errors.hora_final = "La hora final es obligatoria";
+  }
+
+  if(data.hora_inicio && data.hora_final && data.hora_inicio >= data.hora_final){
+    errors.hora_final = "La hora final debe ser mayor que la de inicio";
+  }
+
+  if(!data.salon){
+    errors.salon = "El salón es obligatorio";
+  }
+
+  if(!data.programa_educativo){
+    errors.programa_educativo = "El programa educativo es obligatorio";
+  }
+
+  if(!data.profesor_asignado){
+    errors.profesor_asignado = "Debes seleccionar un profesor";
+  }
+
+  if(!data.creditos){
+    errors.creditos = "Los créditos son obligatorios";
+  }
+
+  return errors;
+}
+
+
 
 public registrar(){
+ // Validaciones del formulario
+    this.errors = {};
+    this.errors = this.RegistrarMateriasService.validarMaterias (this.materias, this.editar);
+    if(Object.keys(this.errors).length > 0){
+      return false;
+    }
+    //convertir las horas a formato 24 horas para que lo leea el backend
+     const dataEnviar = {
+    ...this.materias,
+    hora_inicio: this.convertirHora12a24(this.materias.hora_inicio),
+    hora_final: this.convertirHora12a24(this.materias.hora_final)
+  };
 
-  }
+  console.log("Enviando:", dataEnviar);//que datos vamos a enviar
+
+    // Si pasa todas las validaciones se registra la materia
+    this.RegistrarMateriasService.registrarMateria(dataEnviar).subscribe({ //es una promesa va a esperar 2 respuestas la de exito y la de error
+      next: (response:any) => {
+        //Aquí va la ejecución del servicio si todo es correcto
+        alert('Materia registrada con éxito');
+        console.log("Materia registrada", response);
+
+        //Validar si se registro que entonces navegue en la vista de materias
+        if(this.token != ""){
+          this.router.navigate(['materias']);
+        }else{
+          this.router.navigate(['/']);
+        }
+      },
+      error: (error:any) => {
+        if(error.status === 422){
+          this.errors = error.error.errors;
+        } else {
+          alert('Error al registrar la materia');
+        }
+      }
+    });
+}
 
   public actualizar(){
 
   }
+
+  // metodos para las horas
+  changeHoraInicio(hora: string): void {
+    console.log('Hora inicio cambiada:', hora);
+    this.materias.hora_inicio = hora; // guardamos las horas en el arry materas
+
+    this.validarHoras();
+  }
+
+  changeHoraFinal(hora: string): void {
+    console.log('Hora final cambiada:', hora);
+    this.materias.hora_final = hora; // guardamos las horas en el arry materas
+
+
+    this.validarHoras();
+  }
+
+    private validarHoras(): void {
+    // Limpiar errores previos para reutilizar
+    this.errors.hora_inicio = '';
+    this.errors.hora_final = '';
+
+    // Validar que la hora final sea mayor que la hora inicial
+    if (this.materias.hora_inicio && this.materias.hora_final) {
+      const inicio = this.convertirHora12a24(this.materias.hora_inicio);
+      const final = this.convertirHora12a24(this.materias.hora_final);
+
+      if (inicio && final && inicio >= final) {
+        this.errors.hora_final = 'La hora final debe ser mayor que la hora inicial';
+      }
+    }
+  }
+
+  public convertirHora12a24(hora12: string): string {
+    if (!hora12) return '';
+
+    const [time, modifier] = hora12.split(' ');
+    if (!time || !modifier) return hora12;
+
+    let [hours, minutes] = time.split(':').map(Number);
+
+    if (modifier.toUpperCase() === 'PM' && hours < 12) {
+        hours += 12;
+    }
+    if (modifier.toUpperCase() === 'AM' && hours === 12) {
+        hours = 0;
+    }
+
+    const horasStr = hours.toString().padStart(2, '0');
+    const minutosStr = minutes.toString().padStart(2, '0');
+
+    return `${horasStr}:${minutosStr}`;
+}
+
+public convertirHora24a12(hora24: string): string {
+    if (!hora24) return '';
+
+    const [hours, minutes] = hora24.split(':').map(Number);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    let adjustedHours = hours % 12 || 12; // convertir 0 -> 12
+
+    const horasStr = adjustedHours.toString().padStart(2, '0');
+    const minutosStr = minutes.toString().padStart(2, '0');
+
+    return `${horasStr}:${minutosStr} ${ampm}`;
+}
 
 
 
@@ -120,12 +317,12 @@ public registrar(){
   public checkboxChange(event:any){
     console.log("Evento: ", event);
     if(event.checked){
-     this.materias.dias_json.push(event.source.value);
+     this.materias.dias.push(event.source.value);
     }else{
       console.log(event.source.value);
-      this.materias.dias_json.forEach((materia, i) => {
+      this.materias.dias.forEach((materia, i) => {
         if(materia == event.source.value){
-          this.materias.dias_json.splice(i,1)
+          this.materias.dias.splice(i,1)
         }
       });
     }

@@ -39,7 +39,7 @@ import { getSpanishPaginatorIntl } from './shared/spanish-paginator-intl';
 import { CookieService } from 'ngx-cookie-service';
 
 //Timepicker
-import {MatTimepickerModule} from '@angular/material/timepicker';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 // Modulo para las gráficas
 import { NgChartsModule } from 'ng2-charts';
@@ -101,7 +101,8 @@ import { RegistroMateriasComponent } from './partials/registro-materias/registro
     MatSortModule,
     MatDialogModule,
     NgChartsModule,
-    MatTimepickerModule
+    NgxMaterialTimepickerModule,
+
   ],
   providers: [
     CookieService,
