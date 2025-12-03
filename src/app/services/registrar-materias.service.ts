@@ -129,6 +129,59 @@ public obtenerListaMaterias(): Observable<any> {
   return this.http.get<any>(`${environment.url_api}/lista-materias/`, { headers });
 }
 
+// Petición para obtener una materia por su ID
+public obtenerMateriaPorID(idMateria: number): Observable<any> {
+  const token = this.facadeService.getSessionToken();
+  let headers: HttpHeaders;
+
+  if (token) {
+    headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
+  } else {
+    headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    console.log("No se encontró el token del usuario");
+  }
+
+  return this.http.get<any>(`${environment.url_api}/materias/?id=${idMateria}`, { headers });
+}
+
+public actualizarMateria(data: any): Observable<any> {
+  const token = this.facadeService.getSessionToken();
+  let headers: HttpHeaders;
+
+  if (token) {
+    headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
+  } else {
+    headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    console.log("No se encontró el token del usuario");
+  }
 
 
+  return this.http.put<any>(`${environment.url_api}/materias/`, data, { headers });
+
+
+}
+
+public eliminarMateria(idMateria: number): Observable<any> {
+  // Verificamos si existe el token de sesión
+  const token = this.facadeService.getSessionToken();
+  let headers: HttpHeaders;
+
+  if (token) {
+    headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
+  } else {
+    headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  }
+
+  // Cambia la URL para materias
+  return this.http.delete<any>(`${environment.url_api}/materias/?id=${idMateria}`, { headers });
+}
 }

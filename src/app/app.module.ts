@@ -56,6 +56,7 @@ import { EliminarUserModalComponent } from './modals/eliminar-user-modal/elimina
 import { GraficasScreenComponent } from './screens/graficas-screen/graficas-screen.component';
 import { RegistroMateriasComponent } from './partials/registro-materias/registro-materias.component';
 import { ScreenMateriasComponent } from './screens/screen-materias/screen-materias.component';
+import { ActualizarUserModalComponent } from './modals/actualizar-user-modal/actualizar-user-modal.component';
 
 
 
@@ -79,6 +80,7 @@ import { ScreenMateriasComponent } from './screens/screen-materias/screen-materi
     GraficasScreenComponent,
     RegistroMateriasComponent,
     ScreenMateriasComponent,
+    ActualizarUserModalComponent,
 
 
   ],

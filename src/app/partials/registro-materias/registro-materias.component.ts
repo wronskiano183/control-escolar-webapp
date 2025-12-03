@@ -4,6 +4,9 @@ import { Location } from '@angular/common';
 import { FacadeService } from 'src/app/services/facade.service';
 import { RegistrarMateriasService } from '../../services/registrar-materias.service';
 import { MaestrosService } from 'src/app/services/maestros.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EliminarUserModalComponent } from 'src/app/modals/eliminar-user-modal/eliminar-user-modal.component';
+import { ActualizarUserModalComponent } from 'src/app/modals/actualizar-user-modal/actualizar-user-modal.component';
 
 
 @Component({
@@ -35,9 +38,9 @@ export class RegistroMateriasComponent implements OnInit {
 
   //Para el select
   public areas: any[] = [
-    {value: '1', viewValue: 'Ingeniería en Ciencias de la Computación'},
-    {value: '2', viewValue: 'Licenciatura en Ciencias de la Computación'},
-    {value: '3', viewValue: 'Ingeniería en Tecnologías de la Información'},
+    {value: '1', viewValue: 'Ingenieria en Ciencias de la Computacion'},
+    {value: '2', viewValue: 'Licenciatura en Ciencias de la Computacion'},
+    {value: '3', viewValue: 'Ingenieria en Tecnologias de la Informacion'},
 
   ];
 
@@ -60,7 +63,8 @@ export class RegistroMateriasComponent implements OnInit {
     private facadeService: FacadeService,
     private router: Router,
     private RegistrarMateriasService: RegistrarMateriasService,
-    private maestrosService: MaestrosService
+    private maestrosService: MaestrosService,
+    public dialog: MatDialog,
 
   ){
 
@@ -75,21 +79,34 @@ export class RegistroMateriasComponent implements OnInit {
      //El primer if valida si existe un parámetro en la URL
     if(this.activatedRoute.snapshot.params['id'] != undefined){
       this.editar = true;
-      //Asignamos a nuestra variable global el valor del ID que viene por la URL
-      this.idUser = this.activatedRoute.snapshot.params['id'];
+
+
+
       console.log("ID User: ", this.idUser);
       //Al iniciar la vista asignamos los datos del user
       this.materias = this.datos_user;
-    }else{
+        }else{
 
       // Si no va a this.editar, entonces inicializamos el JSON para registro nuevo
        this.materias = this.RegistrarMateriasService.esquemamaterias();
+       // Asegurar que dias es un array
+
+    if (!this.materias.programa_educativo) {
+  this.materias.programa_educativo = '';
+}
           if (this.materias.hora_inicio) {
         this.materias.hora_inicio = this.materias.hora_inicio;
       }
       if (this.materias.hora_final) {
         this.materias.hora_final = this.materias.hora_final;
       }
+
+      this.materias.dias_json = [...this.materias.dias];  // copia el array de la API
+
+
+
+
+
       this.materias.rol = this.rol;
       this.token = this.facadeService.getSessionToken();
     }
@@ -207,10 +224,71 @@ public registrar(){
 });
 }
 
-  public actualizar(){
+  public actualizar() {
 
+  this.errors = {};
+  this.errors = this.RegistrarMateriasService.validarMaterias(this.materias, this.editar);
+
+  if (Object.keys(this.errors).length > 0) {
+    console.log("Errores de validación:", this.errors);
+    return false;
   }
 
+  // Preparar datos para enviar
+  const dataEnviar = {
+    ...this.materias,
+    hora_inicio: this.convertirHora12a24(this.materias.hora_inicio),
+    hora_final: this.convertirHora12a24(this.materias.hora_final)
+  };
+
+  console.log("Datos preparados para actualizar:", dataEnviar);
+
+  // Mostrar modal de confirmación ANTES de actualizar
+  this.mostrarModalConfirmacion(dataEnviar);
+}
+
+private mostrarModalConfirmacion(dataEnviar: any) {
+  console.log("Mostrando modal de confirmación...");
+
+  const dialogRef = this.dialog.open(ActualizarUserModalComponent, {
+    data: {
+      id: this.idUser,
+      rol: 'materias',
+      nombre: this.materias.nombre_materia,
+      nrc: this.materias.nrc,
+      datos: dataEnviar
+    },
+    height: '288px',
+    width: '328px',
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    console.log("Resultado del modal:", result);
+
+    if (result && result.isactualizar) {
+      console.log("se ejecuta laactualización");
+      this.ejecutarActualizacion(dataEnviar);
+    } else {
+      console.log("se cancela la actualización");
+    }
+  });
+}
+
+private ejecutarActualizacion(dataEnviar: any) {
+  console.log("actualizando");
+
+  this.RegistrarMateriasService.actualizarMateria(dataEnviar).subscribe(
+    (response) => {
+      alert("Materia actualizada con éxito");
+      console.log("Materia actualizada: ", response);
+      this.router.navigate(['materias']);
+    },
+    (error) => {
+      console.error("Error al actualizar la materia", error);
+      alert("Error al actualizar la Materia");
+    }
+  );
+}
   // metodos para las horas
   changeHoraInicio(hora: string): void {
     console.log('Hora inicio cambiada:', hora);
@@ -296,8 +374,21 @@ public convertirHora24a12(hora24: string): string {
   }
 
  public revisarSeleccion(nombre: string){
-  if(this.materias.dias_json){ // Cambiar de programa_educativo a dias_json
-    var busqueda = this.materias.dias_json.find((element)=>element==nombre);
+  if(this.materias.dias){
+    var busqueda = this.materias.dias.find((element)=>element==nombre);
+    if(busqueda != undefined){
+      return true;
+    }else{
+      return false;
+    }
+  }else{
+    return false;
+  }
+}
+
+public revisarSeleccionprofesor(nombre: string){
+  if(this.materias.profesors){
+    var busqueda = this.materias.profesors.find((element)=>element==nombre);
     if(busqueda != undefined){
       return true;
     }else{

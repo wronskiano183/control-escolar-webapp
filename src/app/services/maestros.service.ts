@@ -155,7 +155,7 @@ export class MaestrosService {
     return this.http.get<any>(`${environment.url_api}/maestros/?id=${idMaestro}`, { headers });
   }
 
-   // Petición para actualizar un alumno
+   // Petición para actualizar un maestro
   public actualizarMaestro(data: any): Observable<any> {
     const token = this.facadeService.getSessionToken();
     let headers: HttpHeaders;

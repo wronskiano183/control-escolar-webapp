@@ -4,18 +4,36 @@
     <mat-card class="role-card">
       <mat-card-header class="role-card-header">
         <div class="actions-header-colum">
-          <ng-container *ngIf="!editar; else activo">
+
+          <ng-container *ngIf="editar && rol == 'materias'">
+            <mat-card-title class="title-card">Editar Materia</mat-card-title>
+            <mat-card-subtitle class="subtitle-card">
+              Modifique la materia seleccionada
+            </mat-card-subtitle>
+          </ng-container>
+
+          <ng-container *ngIf="editar && rol != 'materias'">
+            <mat-card-title class="title-card">Editar de usuario</mat-card-title>
+            <mat-card-subtitle class="subtitle-card">
+              Modifica los datos del usuario seleccionado
+            </mat-card-subtitle>
+          </ng-container>
+
+          <ng-container *ngIf="!editar">
             <mat-card-title class="title-card">Registro de usuario</mat-card-title>
             <mat-card-subtitle class="subtitle-card">
               Selecciona el tipo para mostrar el formulario correspondiente
             </mat-card-subtitle>
           </ng-container>
-          <ng-template #activo>
+          <!--
+           <ng-template #activo>
             <mat-card-title class="title-card">Editar de usuario</mat-card-title>
             <mat-card-subtitle class="subtitle-card">
               Modifica los datos del usuario seleccionado
             </mat-card-subtitle>
           </ng-template>
+          -->
+
         </div>
         <!-- Botón regresar compartido -->
         <div class="actions-row">
@@ -65,7 +83,8 @@
       <app-registro-admin *ngIf="isAdmin" [rol]="tipo_user" [datos_user]="user"></app-registro-admin>
 
       <app-registro-materias *ngIf="isMaterias" [rol]="tipo_user"
-        [datos_user]="editar ? user : null"></app-registro-materias>
+        [datos_user]="editar ? materias : null"></app-registro-materias>
+
 
       <app-registro-alumnos *ngIf="isAlumno" [rol]="tipo_user"
         [datos_user]="editar ? user : null"></app-registro-alumnos>

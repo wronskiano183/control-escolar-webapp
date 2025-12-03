@@ -6,6 +6,8 @@ import { MatRadioChange } from '@angular/material/radio';
 import { AdministradoresService } from 'src/app/services/administradores.service';
 import { MaestrosService } from '../../services/maestros.service';
 import { AlumnosService } from '../../services/alumnos.service';
+import { RegistrarMateriasService } from 'src/app/services/registrar-materias.service';
+
 
 @Component({
   selector: 'app-registro-usuarios-screen',
@@ -16,6 +18,7 @@ export class RegistroUsuariosScreenComponent implements OnInit {
 
   public tipo : string = "registro-usuarios";
   public user : any = {};
+  public materias: any ={};
   public editar : boolean = false;
   public rol : string = "";
   public idUser : number = 0;
@@ -25,6 +28,7 @@ export class RegistroUsuariosScreenComponent implements OnInit {
   public isAlumno:boolean = false;
   public isMaestro:boolean = false;
   public isMaterias:boolean = false;
+
 
   public tipo_user:string = "";
 
@@ -36,10 +40,12 @@ export class RegistroUsuariosScreenComponent implements OnInit {
     private administradoresService: AdministradoresService,
     private MaestrosService: MaestrosService,
     private AlumnosService: AlumnosService,
+    public materiasService: RegistrarMateriasService,
   ) { }
 
   ngOnInit(): void {
      this.user.tipo_usuario = '';
+      this.materias = this.materiasService.esquemamaterias();
     //Obtener de la URL el rol para saber cual editar
     if(this.activatedRoute.snapshot.params['rol'] != undefined){
       this.rol = this.activatedRoute.snapshot.params['rol'];
@@ -52,7 +58,7 @@ export class RegistroUsuariosScreenComponent implements OnInit {
       //Asignamos a nuestra variable global el valor del ID que viene por la URL
       this.idUser = this.activatedRoute.snapshot.params['id'];
       console.log("ID User: ", this.idUser);
-       console.log("ID User: ", this.editar);
+       console.log("ID editar: ", this.editar);
       //Al iniciar la vista obtiene el usuario por su ID
       this.obtenerUserByID();
     }
@@ -144,8 +150,44 @@ export class RegistroUsuariosScreenComponent implements OnInit {
           alert("No se pudo obtener el Alumno seleccionado");
         }
       );
-    }
+    }else if (this.rol == "materias") {
+  this.materiasService.obtenerMateriaPorID(this.idUser).subscribe(
+    (response) => {
+      this.materias = response;
+      console.log("Materia original obtenida: ", this.materias);
+      this.user.tipo_usuario = this.rol;
+      this.isMaterias = true;
 
+      // Formatear los días si vienen como string JSON
+      if (typeof this.materias.dias === 'string') {
+        try {
+          this.materias.dias = JSON.parse(this.materias.dias);
+        } catch (e) {
+          console.error("Error parseando días:", e);
+          this.materias.dias = [];
+        }
+      }
+
+      // Convertir horas de formato 24h a 12h para mostrar en el formulario
+      if (this.materias.hora_inicio) {
+        this.materias.hora_inicio = this.convertirHora24a12(this.materias.hora_inicio);
+      }
+
+      if (this.materias.hora_final) {
+        this.materias.hora_final = this.convertirHora24a12(this.materias.hora_final);
+      }
+
+      this.materias.rol = this.rol;
+      this.isMaterias = true;
+
+      console.log("Materia optenida: ", this.materias);
+    },
+    (error) => {
+      console.log("Error: ", error);
+      alert("No se pudo obtener la materia seleccionada");
+    }
+  );
+}
   }
 
 
@@ -183,5 +225,39 @@ export class RegistroUsuariosScreenComponent implements OnInit {
     this.location.back();
   }
 
+
+   public convertirHora12a24(hora12: string): string {
+    if (!hora12) return '';
+
+    const [time, modifier] = hora12.split(' ');
+    if (!time || !modifier) return hora12;
+
+    let [hours, minutes] = time.split(':').map(Number);
+
+    if (modifier.toUpperCase() === 'PM' && hours < 12) {
+        hours += 12;
+    }
+    if (modifier.toUpperCase() === 'AM' && hours === 12) {
+        hours = 0;
+    }
+
+    const horasStr = hours.toString().padStart(2, '0');
+    const minutosStr = minutes.toString().padStart(2, '0');
+
+    return `${horasStr}:${minutosStr}`;
+}
+
+public convertirHora24a12(hora24: string): string {
+    if (!hora24) return '';
+
+    const [hours, minutes] = hora24.split(':').map(Number);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    let adjustedHours = hours % 12 || 12; // convertir 0 -> 12
+
+    const horasStr = adjustedHours.toString().padStart(2, '0');
+    const minutosStr = minutes.toString().padStart(2, '0');
+
+    return `${horasStr}:${minutosStr} ${ampm}`;
+}
 
 }

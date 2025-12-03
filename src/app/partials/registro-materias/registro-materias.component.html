@@ -9,7 +9,8 @@
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>NRC</mat-label>
-        <input matInput [(ngModel)]="materias.nrc" mask="00000?" name="id" placeholder="Escribe NRC de la materia">
+        <input matInput [(ngModel)]="materias.nrc" mask="00000?" name="id" placeholder="Escribe NRC de la materia"
+          [disabled]="editar">
       </mat-form-field>
       <div *ngIf="errors.nrc" class="invalid-feedback">{{ errors.nrc }}</div>
 

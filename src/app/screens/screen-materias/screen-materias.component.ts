@@ -61,8 +61,6 @@ export class ScreenMateriasComponent implements OnInit {
       this.displayedColumns = [...this.displayedColumns, 'editar','eliminar' , ];
     }
 
-    // Obtener materias y profesores
-
 
   }
 
@@ -189,7 +187,7 @@ export class ScreenMateriasComponent implements OnInit {
 
   // Ir a editar materia
   public goEditar(idMateria: number) {
-    this.router.navigate(["registro-usuarios/materias/" + idMateria]);
+     this.router.navigate(["registro-usuarios/materias/" + idMateria]);
   }
 
   // Ir a registrar nueva materia
@@ -198,27 +196,33 @@ export class ScreenMateriasComponent implements OnInit {
   }
 
   // Eliminar materia
-  public delete(idMateria: number) {
-    // Solo administradores pueden eliminar
-    if (this.rol === 'administrador') {
-      const dialogRef = this.dialog.open(EliminarUserModalComponent, {
-        data: { id: idMateria, rol: 'materias' },
+   public delete(idUser: number) {
+    // Se obtiene el ID del usuario en sesión, es decir, quien intenta eliminar
+    const userIdSession = Number(this.facadeService.getUserId());
+    // --------- Pero el parametro idUser (el de la función) es el ID del maestro que se quiere eliminar ---------
+    // Administrador puede eliminar cualquier maestro
+    // Maestro solo puede eliminar su propio registro
+    if (this.rol === 'administrador' ) {
+      //Si es administrador o es maestro, es decir, cumple la condición, se puede eliminar
+      const dialogRef = this.dialog.open(EliminarUserModalComponent,{
+        data: {id: idUser, rol: 'materias'}, //Se pasan valores a través del componente
         height: '288px',
         width: '328px',
       });
 
-      dialogRef.afterClosed().subscribe(result => {
-        if (result && result.isDelete) {
-          console.log("Materia eliminada");
-          alert("Materia eliminada correctamente.");
-          // Recargar página
-          window.location.reload();
-        } else {
-          console.log("No se eliminó la materia");
-        }
-      });
-    } else {
-      alert("No tienes permisos para eliminar materias.");
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.isDelete){
+        console.log("Materia eliminada");
+        alert("Materia eliminada correctamente.");
+        //Recargar página
+        window.location.reload();
+      }else{
+        alert("La Materia no se ha podido eliminar.");
+        console.log("No se eliminó la materia");
+      }
+    });
+    }else{
+      alert("No tienes permisos para eliminar esta.");
     }
   }
 }
