@@ -1,27 +1,21 @@
-# ControlEscolarWebapp
+README Repositorio Frontend (Angular)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.11.
+Este proyecto alberga el frontend del Sistema de Gestión Académica, una aplicación web diseñada para la administración de materias, maestros, alumnos y administradores.
 
-## Development server
+Tecnologías Utilizadas
+Framework: Angular 16
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Diseño/UI: Angular Material y Bootstrap
 
-## Code scaffolding
+Gráficas: ng2-charts (basado en Chart.js)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Comunicación: Consumo de la API RESTful provista por el backend de Django.
 
-## Build
+Funcionalidades Clave
+Módulo de Materias: Interfaz completa para el registro, edición, eliminación y visualización tabular de asignaturas.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Control de Accesos: Lógica de visualización dinámica que restringe botones de edición/eliminación y opciones de menú (como el registro de materias) según el rol del usuario (Administrador, Maestro o Alumno).
 
-## Running unit tests
+Analíticas: Módulo de gráficas interactivas que visualiza la distribución de usuarios y datos del sistema.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Componentes Reutilizables: Uso de formularios y modales genéricos para las operaciones CRUD, optimizando el desarrollo.
