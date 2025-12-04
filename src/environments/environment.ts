@@ -4,6 +4,6 @@
 
 export const environment = {
   production: false,
-  url_api: "gerardoaplicacioneswweb.mysql.pythonanywhere-services.com"
+  url_api: "https://gerardoaplicacioneswweb.pythonanywhere.com"
  // url_api: "http://127.0.0.1:8000"
 };
