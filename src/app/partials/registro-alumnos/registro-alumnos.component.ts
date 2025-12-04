@@ -127,7 +127,7 @@ export class RegistroAlumnosComponent implements OnInit {
 
 
   public actualizar() {
-     if (this.rol === 'administrador') {
+    // if (this.rol === 'administrador') {
   // Validación de los datos
   this.errors = {};
   this.errors = this.AlumnosService.validaralumno(this.alumno, this.editar);
@@ -170,9 +170,9 @@ export class RegistroAlumnosComponent implements OnInit {
     }
   });
 
-  }else{
-              alert("No tienes permisos para actualizar este alumno.");
-            }
+  //}else{
+    //          alert("No tienes permisos para actualizar este alumno.");
+      //      }
 }
 
 
