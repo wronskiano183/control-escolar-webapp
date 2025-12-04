@@ -18,7 +18,7 @@ export class GraficasScreenComponent implements OnInit {
     datasets: [
       {
         data: [89, 34, 43, 54, 28, 74, 93],
-        label: 'Registro de materias',
+        label: 'usuarios en el sistema',
         backgroundColor: '#F88406'
       }
     ]
@@ -34,7 +34,7 @@ export class GraficasScreenComponent implements OnInit {
     datasets: [
       {
         data: [34, 43, 54, 28, 74],
-        label: 'Eventos Académicos',
+        label: 'Usuarios en el sistema',
         backgroundColor: [
           '#F88406',
           '#FCFF44',
@@ -158,22 +158,44 @@ export class GraficasScreenComponent implements OnInit {
 
       //Barras
   this.barChartData = {
-    labels: ["Congreso", "FePro", "Presentación Doctoral", "Feria Matemáticas", "T-System"],
+    labels: ["Administradores", "Maestros", "Alumnos"],
+
     datasets: [
       {
         data: [this.total_user.admins,
             this.total_user.maestros,
             this.total_user.alumnos],
-        label: 'Eventos Académicos',
+        label: 'Usuarios en el sistema',
         backgroundColor: [
           '#F88406',
-          '#FCFF44',
           '#82D3FB',
           '#FB82F5',
-          '#2AD84A'
+
         ]
       }
     ]
   }
+
+    //Histograma
+  this.lineChartData = {
+    labels: ["Administradores", "Maestros", "Alumnos"],
+    datasets: [
+      {
+       data: [this.total_user.admins,
+            this.total_user.maestros,
+            this.total_user.alumnos],
+
+        label: 'usuarios en el sistema',
+        backgroundColor: '#F88406'
+      }
+    ]
+  }
+  this.lineChartOption = {
+    responsive: false
+
+  }
+  this.lineChartPlugins = [DatalabelsPlugin];
+
+
   }
 }

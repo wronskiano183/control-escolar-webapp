@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdministradoresService } from 'src/app/services/administradores.service';
 import { FacadeService } from 'src/app/services/facade.service';
 import { Location } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { EliminarUserModalComponent } from 'src/app/modals/eliminar-user-modal/eliminar-user-modal.component';
+import { ActualizarUserModalComponent } from 'src/app/modals/actualizar-user-modal/actualizar-user-modal.component';
 
 @Component({
   selector: 'app-registro-admin',
@@ -31,7 +34,8 @@ export class RegistroAdminComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     private AdministradoresService: AdministradoresService,
     private facadeService: FacadeService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -118,30 +122,56 @@ export class RegistroAdminComponent implements OnInit {
   }
 
 
-  public actualizar(){
- // Validación de los datos
-    this.errors = {};
-    this.errors = this.AdministradoresService.validarAdmin(this.admin, this.editar);
-    if(Object.keys(this.errors).length > 0){
-      return false;
-    }
-    // Ejecutamos el servicio de actualización
-    this.AdministradoresService.actualizarAdmin(this.admin).subscribe(
-      (response) => {
-        // Redirigir o mostrar mensaje de éxito
-        alert("Administrador actualizado exitosamente");
-        console.log("Administrador actualizado: ", response);
-        this.router.navigate(["administrador"]);
-      },
-      (error) => {
-        // Manejar errores de la API
-        alert("Error al actualizar administrador");
-        console.error("Error al actualizar administrador: ", error);
-      }
-    );
 
+public actualizar() {
+  // Validación de los datos
+  this.errors = {};
+  this.errors = this.AdministradoresService.validarAdmin(this.admin, this.editar);
+
+  if (Object.keys(this.errors).length > 0) {
+    console.log("Errores de validación:", this.errors);
+    return false;
   }
 
+  //console.log("Datos preparados para actualizar:", this.admin);
+
+  //abre el modañ
+  const dialogRef = this.dialog.open(ActualizarUserModalComponent, {
+    data: {
+      id: this.admin.id,
+      rol: 'administrador',
+      nombre: this.admin.first_name + ' ' + this.admin.last_name,
+      email: this.admin.email,
+      datos: this.admin
+    },
+    height: '288px',
+    width: '328px',
+  });
+
+
+  dialogRef.afterClosed().subscribe(result => {
+
+    if (result.isactualizar) {
+      console.log("Se actualizao correctamente el administrador");
+
+      // se ejecuta la actualizacion despues de la confirmacion
+      this.AdministradoresService.actualizarAdmin(this.admin).subscribe(
+        (response) => {
+          alert("Administrador actualizado exitosamente");
+          console.log("Administrador actualizado: ", response);
+          this.router.navigate(["administrador"]);
+        },
+        (error) => {
+          alert("Error al actualizar administrador");
+          console.error("Error al actualizar administrador: ", error);
+        }
+      );
+    } else {
+      console.log("Se cancelo la actualizacion");
+
+    }
+  });
+}
 
   // Función para los campos solo de datos alfabeticos
    public soloLetras(event: KeyboardEvent) {

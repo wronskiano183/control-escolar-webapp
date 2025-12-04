@@ -3,6 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FacadeService } from 'src/app/services/facade.service';
 import { Location } from '@angular/common';
 import { MaestrosService } from '../../services/maestros.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EliminarUserModalComponent } from 'src/app/modals/eliminar-user-modal/eliminar-user-modal.component';
+import { ActualizarUserModalComponent } from 'src/app/modals/actualizar-user-modal/actualizar-user-modal.component';
 
 @Component({
   selector: 'app-registro-maestros',
@@ -54,7 +57,8 @@ export class RegistroMaestrosComponent implements OnInit {
     private location : Location,
     public activatedRoute: ActivatedRoute,
     private facadeService: FacadeService,
-    private MaestrosService: MaestrosService
+    private MaestrosService: MaestrosService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -128,7 +132,7 @@ public registrar(){
 
         //Validar si se registro que entonces navegue en la vista de mestros
         if(this.token != ""){
-          this.router.navigate(['maestro']);
+          this.router.navigate(['maestros']);
         }else{
           this.router.navigate(['/']);
         }
@@ -143,30 +147,47 @@ public registrar(){
     });
   }
 
-  public actualizar(){
+  public actualizar() {
+  // Validación de los datos
+  this.errors = {};
+  this.errors = this.MaestrosService.validarmaestros(this.maestro, this.editar);
 
-    // Validación de los datos
-    this.errors = {};
-    this.errors = this.MaestrosService.validarmaestros(this.maestro, this.editar);
-    if(Object.keys(this.errors).length > 0){
-      return false;
-    }
-    // Ejecutamos el servicio de actualización
-    this.MaestrosService.actualizarMaestro(this.maestro).subscribe(
-      (response) => {
-        // Redirigir o mostrar mensaje de éxito
-        alert("Maestro actualizado exitosamente");
-        console.log("Maestro actualizado: ", response);
-        this.router.navigate(["maestros"]);
-      },
-      (error) => {
-        // Manejar errores de la API
-        alert("Error al actualizar Maestro");
-        console.error("Error al actualizar Maestro: ", error);
-      }
-    );
-
+  if (Object.keys(this.errors).length > 0) {
+    console.log("Errores de validación:", this.errors);
+    return false;
   }
+
+  console.log("Datos preparados para actualizar:", this.maestro);
+
+  const dialogRef = this.dialog.open(ActualizarUserModalComponent, {
+    data: {
+      id: this.maestro.id,
+      rol: 'maestro',
+      nombre: this.maestro.first_name + ' ' + this.maestro.last_name,
+      email: this.maestro.email,
+      datos: this.maestro
+    },
+    height: '288px',
+    width: '328px',
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result && result.isactualizar) {
+
+      this.MaestrosService.actualizarMaestro(this.maestro).subscribe(
+        (response) => {
+          alert("Maestro actualizado exitosamente");
+          console.log("Maestro actualizado: ", response);
+          this.router.navigate(["maestros"]);
+        },
+        (error) => {
+          alert("Error al actualizar Maestro");
+          console.error("Error al actualizar Maestro: ", error);
+        }
+      );
+    }
+  });
+}
 
 
 

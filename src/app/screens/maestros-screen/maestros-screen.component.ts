@@ -27,7 +27,7 @@ export class MaestrosScreenComponent implements OnInit {
 
 
   //Para la tabla
-  displayedColumns: string[] = ['id_trabajador', 'nombre', 'email', 'fecha_nacimiento', 'telefono', 'rfc', 'cubiculo', 'area_investigacion', 'editar', 'eliminar'];
+  displayedColumns: string[] = ['id_trabajador', 'nombre', 'email', 'fecha_nacimiento', 'telefono', 'rfc', 'cubiculo', 'area_investigacion'];
   dataSource = new MatTableDataSource<DatosUsuario>(this.lista_maestros as DatosUsuario[]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -57,6 +57,10 @@ export class MaestrosScreenComponent implements OnInit {
     }
     //Obtener maestros
     this.obtenerMaestros();
+    if (this.rol === 'administrador') {
+      this.displayedColumns = [...this.displayedColumns, 'editar','eliminar' , ];
+    }
+
   }
  // es el para el filtering
     applyFilter(event: Event) {

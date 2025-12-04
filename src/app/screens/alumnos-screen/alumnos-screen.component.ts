@@ -22,7 +22,7 @@ export class AlumnosScreenComponent implements OnInit {
   public lista_alumnos: any[] = [];
 
   //Para la tabla
-  displayedColumns: string[] = ['clave_alumno', 'nombre', 'email', 'fecha_nacimiento', 'telefono', 'curp', 'edad', 'editar', 'eliminar'];
+  displayedColumns: string[] = ['clave_alumno', 'nombre', 'email', 'fecha_nacimiento', 'telefono', 'curp', 'edad'];
   dataSource = new MatTableDataSource<DatosAlumno>(this.lista_alumnos as DatosAlumno[]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -52,6 +52,10 @@ export class AlumnosScreenComponent implements OnInit {
     }
     //Obtener alumnos
     this.obtenerAlumnos();
+
+    if (this.rol === 'administrador') {
+      this.displayedColumns = [...this.displayedColumns, 'editar','eliminar' , ];
+    }
   }
 
    // es el para el filtering

@@ -37,29 +37,42 @@ ngOnInit(): void {
 
  public ActualizarUser() {
   if (this.rol == "administrador") {
-    this.administradoresService.actualizarAdmin(this.data.id).subscribe(
+    console.log("Datos del administrador a actualizar:", this.data);
+
+    this.administradoresService.actualizarAdmin(this.data.datos).subscribe(
       (response) => {
-        console.log(response);
+        console.log("Respuesta del servidor:", response);
         this.dialogRef.close({ isactualizar: true });
-      }, (error) => {
+      },
+      (error) => {
+        console.error("Error al actualizar administrador:", error);
         this.dialogRef.close({ isactualizar: false });
       }
     );
-  } else if (this.rol == "maestro") {
-    this.maestrosService.actualizarMaestro(this.data.id).subscribe(
+  } else if(this.rol == "maestro") {
+  console.log("Datos del maestro a actualizar:", this.data);
+
+  this.maestrosService.actualizarMaestro(this.data.datos).subscribe(
+    (response) => {
+      console.log("Respuesta del servidor:", response);
+      this.dialogRef.close({ isactualizar: true });
+    },
+    (error) => {
+      console.error("Error al actualizar maestro:", error);
+      this.dialogRef.close({ isactualizar: false });
+    }
+  );
+}else if (this.rol == "alumnos") {
+    // CORREGIR: Cambiar this.data.id por this.data.datos
+    console.log("Datos del alumno a actualizar:", this.data);
+
+    this.alumnosService.actualizarAlumno(this.data.datos).subscribe(
       (response) => {
-        console.log(response);
+        console.log("Respuesta del servidor:", response);
         this.dialogRef.close({ isactualizar: true });
-      }, (error) => {
-        this.dialogRef.close({ isactualizar: false });
-      }
-    );
-  } else if (this.rol == "alumnos") {
-    this.alumnosService.actualizarAlumno(this.data.id).subscribe(
-      (response) => {
-        console.log(response);
-        this.dialogRef.close({ isactualizar: true });
-      }, (error) => {
+      },
+      (error) => {
+        console.error("Error al actualizar alumno:", error);
         this.dialogRef.close({ isactualizar: false });
       }
     );

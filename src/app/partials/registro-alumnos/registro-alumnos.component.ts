@@ -3,6 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { AlumnosService } from '../../services/alumnos.service';
 import { FacadeService } from 'src/app/services/facade.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EliminarUserModalComponent } from 'src/app/modals/eliminar-user-modal/eliminar-user-modal.component';
+import { ActualizarUserModalComponent } from 'src/app/modals/actualizar-user-modal/actualizar-user-modal.component';
 
 @Component({
   selector: 'app-registro-alumnos',
@@ -34,7 +37,8 @@ export class RegistroAlumnosComponent implements OnInit {
     private location : Location,
     public activatedRoute: ActivatedRoute,
     private AlumnosService: AlumnosService,
-    private facadeService: FacadeService
+    private facadeService: FacadeService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -122,29 +126,54 @@ export class RegistroAlumnosComponent implements OnInit {
   }
 
 
-  public actualizar(){
-    // Validación de los datos
-    this.errors = {};
-    this.errors = this.AlumnosService.validaralumno(this.alumno, this.editar);
-    if(Object.keys(this.errors).length > 0){
-      return false;
-    }
-    // Ejecutamos el servicio de actualización
-    this.AlumnosService.actualizarAlumno(this.alumno).subscribe(
-      (response) => {
-        // Redirigir o mostrar mensaje de éxito
-        alert("Alumno actualizado exitosamente");
-        console.log("Alumno actualizado: ", response);
-        this.router.navigate(["alumnos"]);
-      },
-      (error) => {
-        // Manejar errores de la API
-        alert("Error al actualizar Alumno");
-        console.error("Error al actualizar Alumno: ", error);
-      }
-    );
+  public actualizar() {
+     if (this.rol === 'administrador') {
+  // Validación de los datos
+  this.errors = {};
+  this.errors = this.AlumnosService.validaralumno(this.alumno, this.editar);
+
+  if (Object.keys(this.errors).length > 0) {
+    console.log("Errores de validación:", this.errors);
+    return false;
   }
 
+
+      console.log("Tienes permisos para actualizar este Alumno.");
+  const dialogRef = this.dialog.open(ActualizarUserModalComponent, {
+    data: {
+      id: this.alumno.id,
+      rol: 'alumnos',
+      nombre: this.alumno.first_name + ' ' + this.alumno.last_name,
+      matricula: this.alumno.matricula,
+      email: this.alumno.email,
+      datos: this.alumno
+
+    },
+    height: '288px',
+    width: '328px',
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result && result.isactualizar) {
+      // Si confirmó, ejecutar la actualización aquí
+      this.AlumnosService.actualizarAlumno(this.alumno).subscribe(
+        (response) => {
+          alert("Alumno actualizado exitosamente");
+          console.log("Alumno actualizado: ", response);
+          this.router.navigate(["alumnos"]);
+        },
+        (error) => {
+          alert("Error al actualizar Alumno");
+          console.error("Error al actualizar Alumno: ", error);
+        }
+      );
+    }
+  });
+
+  }else{
+              alert("No tienes permisos para actualizar este alumno.");
+            }
+}
 
 
   //Función para detectar el cambio de fecha

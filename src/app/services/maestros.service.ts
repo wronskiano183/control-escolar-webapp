@@ -59,8 +59,6 @@ export class MaestrosService {
     console.log("Validando maestro... ", data);
     let error: any = {};
 
-    //Validaciones comunes
-    //Validaciones comunes
     if(!this.validatorService.required(data["clave_maestros"])){
       error["clave_maestros"] = this.errorService.required;
     }
@@ -81,6 +79,15 @@ export class MaestrosService {
       error['email'] = this.errorService.email;
     }
 
+   if (!data.materias_json || data.materias_json.length === 0) {
+    error["materias_json"] = "Selecciona al menos una materia";
+  }
+  if (!this.validatorService.required(data["cubiculo"])) {
+    error["cubiculo"] = this.errorService.required;
+  }
+  if (!this.validatorService.required(data["area_investigacion"])) {
+    error["area_investigacion"] = this.errorService.required;
+  }
     if(!editar){
       if(!this.validatorService.required(data["password"])){
         error["password"] = this.errorService.required;

@@ -94,6 +94,7 @@ export class RegistroUsuariosScreenComponent implements OnInit {
 
 
     }
+
   }
 
     //Obtener usuario por ID
