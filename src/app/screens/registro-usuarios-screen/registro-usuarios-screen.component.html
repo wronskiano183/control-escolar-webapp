@@ -48,7 +48,7 @@
           <mat-radio-group aria-label="Tipo de usuario" [(ngModel)]="user.tipo_usuario" (change)="radioChange($event)"
             [disabled]="editar">
 
-            <mat-radio-button class="role-pill" value="administrador" [disabled]="true"
+            <mat-radio-button class="role-pill" value="administrador"
               *ngIf="!facadeService.getUserGroup() || facadeService.getUserGroup() === 'administrador'">
               <mat-icon class="me-1" fontIcon="admin_panel_settings"></mat-icon>
               <span class="text-radio">Administrador</span>
