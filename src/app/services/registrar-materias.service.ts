@@ -168,7 +168,7 @@ public actualizarMateria(data: any): Observable<any> {
 }
 
 public eliminarMateria(idMateria: number): Observable<any> {
-  // Verificamos si existe el token de sesión
+
   const token = this.facadeService.getSessionToken();
   let headers: HttpHeaders;
 
@@ -181,7 +181,7 @@ public eliminarMateria(idMateria: number): Observable<any> {
     headers = new HttpHeaders({ 'Content-Type': 'application/json' });
   }
 
-  // Cambia la URL para materias
+
   return this.http.delete<any>(`${environment.url_api}/materias/?id=${idMateria}`, { headers });
 }
 }

@@ -159,7 +159,7 @@ export class RegistroUsuariosScreenComponent implements OnInit {
       this.user.tipo_usuario = this.rol;
       this.isMaterias = true;
 
-      // Formatear los días si vienen como string JSON
+      // para manejp de dias
       if (typeof this.materias.dias === 'string') {
         try {
           this.materias.dias = JSON.parse(this.materias.dias);
@@ -198,7 +198,7 @@ export class RegistroUsuariosScreenComponent implements OnInit {
     this.isAdmin = true;
     this.isAlumno = false;
     this.isMaestro = false;
-    this.isMaterias = false;  // ← Asegurar que se desactiven los otros
+    this.isMaterias = false;
     this.tipo_user = "administrador";
   }else if (event.value == "alumno"){
     this.isAdmin = false;
@@ -212,7 +212,7 @@ export class RegistroUsuariosScreenComponent implements OnInit {
     this.isMaestro = true;
     this.isMaterias = false;
     this.tipo_user = "maestro";
-  }else if (event.value == "materias"){  // ← Cambiar a "materias" (plural)
+  }else if (event.value == "materias"){
     this.isAdmin = false;
     this.isAlumno = false;
     this.isMaestro = false;

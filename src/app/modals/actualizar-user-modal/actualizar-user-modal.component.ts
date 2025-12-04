@@ -63,7 +63,7 @@ ngOnInit(): void {
     }
   );
 }else if (this.rol == "alumnos") {
-    // CORREGIR: Cambiar this.data.id por this.data.datos
+
     console.log("Datos del alumno a actualizar:", this.data);
 
     this.alumnosService.actualizarAlumno(this.data.datos).subscribe(

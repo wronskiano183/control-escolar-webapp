@@ -56,7 +56,7 @@ export class ScreenMateriasComponent implements OnInit {
       this.router.navigate(["/"]);
     }
 
-    // Ajustar columnas según rol para evitar que in maestro elimine o modifique sus materias
+    // para que solo los botones de editar y eliminar los vea el administrador
     if (this.rol === 'administrador') {
       this.displayedColumns = [...this.displayedColumns, 'editar','eliminar' , ];
     }
@@ -79,7 +79,7 @@ export class ScreenMateriasComponent implements OnInit {
     this.maestrosService.obtenerListaMaestros().subscribe(
       (response) => {
         this.lista_profesores = response;
-           this.obtenerMaterias(); //aqui para que de tiempo de cargar los maestros y no este el el arreglo vacio
+           this.obtenerMaterias();
         console.log("Lista profesores para materias: ", this.lista_profesores);
       },
       (error) => {
@@ -90,7 +90,6 @@ export class ScreenMateriasComponent implements OnInit {
 
   // Obtener lista de materias
   public obtenerMaterias() {
-    // Necesitarás crear este método en tu servicio
     this.materiasService.obtenerListaMaterias().subscribe(
       (response) => {
         this.lista_materias = response;
@@ -99,8 +98,6 @@ export class ScreenMateriasComponent implements OnInit {
         if (this.lista_materias.length > 0) {
           // Procesar datos para mostrar
           this.procesarMaterias();
-
-          // Actualizar dataSource
           this.dataSource.data = this.lista_materias;
 
           // Configurar paginator y sort
@@ -131,11 +128,11 @@ export class ScreenMateriasComponent implements OnInit {
       profesor => profesor.id == materia.profesor_asignado
     );
 
-    // Si encontramos al profesor, poner su nombre
+    //para poner el elmbre del prpfesor
     if (profesorEncontrado && profesorEncontrado.user) {
       materia.profesor = profesorEncontrado.user.first_name + ' ' + profesorEncontrado.user.last_name;
     }
-    // Si no encontramos, poner el ID
+    // si no se puede poner el nombre usamos solo su id
     else if (materia.profesor_asignado) {
       materia.profesor = 'ID: ' + materia.profesor_asignado;
     }

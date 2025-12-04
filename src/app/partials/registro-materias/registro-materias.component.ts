@@ -79,17 +79,13 @@ export class RegistroMateriasComponent implements OnInit {
      //El primer if valida si existe un parámetro en la URL
     if(this.activatedRoute.snapshot.params['id'] != undefined){
       this.editar = true;
-
-
-
       console.log("ID User: ", this.idUser);
       //Al iniciar la vista asignamos los datos del user
       this.materias = this.datos_user;
         }else{
 
-      // Si no va a this.editar, entonces inicializamos el JSON para registro nuevo
+      // vamos para hacer reistro nuevo
        this.materias = this.RegistrarMateriasService.esquemamaterias();
-       // Asegurar que dias es un array
 
     if (!this.materias.programa_educativo) {
   this.materias.programa_educativo = '';
@@ -101,7 +97,7 @@ export class RegistroMateriasComponent implements OnInit {
         this.materias.hora_final = this.materias.hora_final;
       }
 
-      this.materias.dias_json = [...this.materias.dias];  // copia el array de la API
+      this.materias.dias_json = [...this.materias.dias];
 
 
 
@@ -110,7 +106,7 @@ export class RegistroMateriasComponent implements OnInit {
       this.materias.rol = this.rol;
       this.token = this.facadeService.getSessionToken();
     }
-    //Imprimir datos en consola
+    //Imprimir datos en consola para verificar
     console.log("Maestro: ", this.materias);
 
 
@@ -200,7 +196,7 @@ public registrar(){
         }
       },
       error: (error:any) => {
-       // ERROR ESPECÍFICO DE NRC DUPLICADO
+       // aqui checamos por si el nrc esta duplicado
     if (error.status === 400 && error.error?.nrc) {
       const mensajeError = Array.isArray(error.error.nrc)
         ? error.error.nrc[0]
@@ -209,14 +205,14 @@ public registrar(){
       // error por si el nrc ya esta registrdo
       alert(`Error: El NRC ${this.materias.nrc} ya está registrado en el sistema.\n\nPor favor, usa un NRC diferente.`);
 
-      // También poner el error en el formulario
+      // mandamos mensaje al ususario para que sepa
       this.errors.nrc = "Este NRC ya existe";
     }
-    // Mantienes tu manejo actual para error 422
+
     else if(error.status === 422){
       this.errors = error.error.errors;
     }
-    // Error genérico para otros casos
+
     else {
       alert('Error al registrar la materia');
     }
@@ -242,8 +238,6 @@ public registrar(){
   };
 
   console.log("Datos preparados para actualizar:", dataEnviar);
-
-  // Mostrar modal de confirmación ANTES de actualizar
   this.mostrarModalConfirmacion(dataEnviar);
 }
 

@@ -57,6 +57,7 @@ export class MaestrosScreenComponent implements OnInit {
     }
     //Obtener maestros
     this.obtenerMaestros();
+        // para que solo los botones de editar y eliminar los vea el administrador
     if (this.rol === 'administrador') {
       this.displayedColumns = [...this.displayedColumns, 'editar','eliminar' , ];
     }
